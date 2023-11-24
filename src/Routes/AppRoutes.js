@@ -1,10 +1,11 @@
+import About from "../Pages/About/About";
 import Home from "../Pages/Home/Home";
 
-function App() {
+function AppRoutes() {
   return (
     <div className="App">
       <header className="App-header">
-        <Home/>
+        <About/>
       </header>
       <main>
       </main>
@@ -12,4 +13,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppRoutes;
