@@ -21,7 +21,7 @@ const About = () => {
                         <li className='poiret-20'>Writing your personal journal.</li>
                         <li className='poiret-20'>Writing Articles.</li>
                         <li className='poiret-20'>Creating presentations.</li>
-                        <li className='poiret-20'>Writing E-mails and many more.</li>
+                        <li className='poiret-20'>Writing E-mails and more.</li>
                         </ul>
                     </div>
 
