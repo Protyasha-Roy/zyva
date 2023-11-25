@@ -1,6 +1,7 @@
 import React from 'react';
 import folderIcon from '../../assets/images/Icon-images/folder.png';
 import fileIcon from '../../assets/images/Icon-images/document.png';
+import './Playground.css';
 
 const PlaygroundAside = () => {
     return (
@@ -22,7 +23,7 @@ const PlaygroundAside = () => {
 
                 <div>
                     <div className='flex flex-col'>
-                        <div className='flex items-center p-1 bg-slate-900'>
+                        <div className='flex items-center p-1 folder'>
                             <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
                             <p className='ml-1 sulphur-20'>Dream Note</p>
                         </div>
@@ -46,7 +47,7 @@ const PlaygroundAside = () => {
 
                 <div>
                     <div className='flex flex-col'>
-                        <div className='flex items-center p-1 bg-slate-900'>
+                        <div className='flex items-center p-1 folder'>
                             <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
                             <p className='ml-1 sulphur-20'>Noway notes for..</p>
                         </div>

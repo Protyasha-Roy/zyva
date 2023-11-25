@@ -1,0 +1,30 @@
+.folder {
+    background-color: rgba(22, 22, 23, 1);
+}
+
+.playground {
+    background-color:rgba(39, 38, 45, 1) ;
+}
+
+.file-title{
+    color: rgb(156, 152, 152);
+}
+
+.speech-container{
+    background-color: rgba(24, 25, 28, 1);
+    overflow-y: scroll;
+    height: 72vh;
+}
+
+.speech-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.speech-container::-webkit-scrollbar-thumb {
+    background-color: rgb(59, 59, 60);
+    border-radius: 0px;
+  }
+
+  /* .speech-container::-webkit-scrollbar-track {
+    background-color: #8fb5f3;
+  } */
