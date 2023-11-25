@@ -3,6 +3,7 @@ import About from "../Pages/About/About";
 import GetAccess from "../Pages/GetAccess/GetAccess";
 import Home from "../Pages/Home/Home";
 import Instructions from "../Pages/Instructions/Instructions";
+import Playground from "../Pages/Playground/Playground";
 
 function AppRoutes() {
   return (
@@ -11,10 +12,9 @@ function AppRoutes() {
        
       </header>
       <main>
-        <Home/>
-        <About/>
-        <GetAccess/>
-        <Instructions/>
+        
+        <Playground/>
+        
       </main>
     </div>
   );
