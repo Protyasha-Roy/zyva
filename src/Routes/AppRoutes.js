@@ -12,6 +12,9 @@ function AppRoutes() {
       </header>
       <main>
         <Home/>
+        <About/>
+        <GetAccess/>
+        <Instructions/>
       </main>
     </div>
   );

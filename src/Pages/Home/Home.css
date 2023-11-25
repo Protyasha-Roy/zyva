@@ -6,8 +6,8 @@
 }
 
 .image-container {
-    width: 80%;
-    height: 100%;
+    width: 70%;
+    overflow: hidden;
 }
 
 .app-image {
