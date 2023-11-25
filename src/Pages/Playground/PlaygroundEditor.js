@@ -4,12 +4,13 @@ import editIcon from '../../assets/images/Icon-images/edit.png';
 import deleteIcon from '../../assets/images/Icon-images/delete.png';
 import downloadPdfIcon from '../../assets/images/Icon-images/download-pdf.png';
 import playButton from '../../assets/images/Icon-images/play.png';
+import { Link } from 'react-router-dom';
 
 const PlaygroundEditor = () => {
     return (
         <section className='col-span-5 flex flex-col items-center p-2'>
                 <div className='flex justify-between w-11/12 items-center'>
-                    <p className='sulphur-30'>zyva</p>
+                    <Link to='/' className='sulphur-30 cursor'>zyva</Link>
                     <img className='w-10 h-10' src={profileIcon} alt="" />
                 </div>
 
