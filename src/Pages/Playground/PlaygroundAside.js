@@ -8,22 +8,26 @@ import cancelIcon from '../../assets/images/Icon-images/cancel.png';
 
 const PlaygroundAside = () => {
     const inputRef = useRef(null);
+
     
     const folders = [{id: "2345tye", title: "Nightmares", notes: [{id:"3425ertghdf",title: "day dreaming"}, {id:"34wrtg",title: "no where"}]},{id: "43253tergf", title: "Nightmares", notes: [{id:"gsflgk",title: "day dreaming"}, {id:"fslkjjp23",title: "no where"}]}];
+    const notes = [{id:"3425ertghdf",title: "day dreaming"}, {id:"34wrtg",title: "no where"}];
 
     const [foldersArray, setFoldersArray] = useState(folders);
-    const [createFolderClicked, setCreateFolderClicked] = useState(false);
+    const [notesArray, setNotesArray] = useState(notes);
+
+    const [createFileClicked, setCreateFileClicked] = useState(false);
     const [buttonClicked, setButtonClicked] = useState('');
 
 
     const handleCreateFolder = (e) => {
         setButtonClicked("Enter Folder Name");
-        setCreateFolderClicked(true);
+        setCreateFileClicked(true);
     }
 
     const handleCreateNote = (e) => {
         setButtonClicked("Enter Note Name");
-        setCreateFolderClicked(true);
+        setCreateFileClicked(true);
     }
 
     const handleChecked = () => {
@@ -32,36 +36,54 @@ const PlaygroundAside = () => {
             alert("Ënter a name first")
         }
         else{
-            const newFolders = [...foldersArray, {
-                id: inputValue,
-                title: inputValue,
-                notes: []
-            }]
-            setFoldersArray(newFolders);
-            setCreateFolderClicked(false);
-        }
-        console.log(folders);
-    }
-
-    const handleCanceled = () => {
-        setCreateFolderClicked(false);
-    }
-
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            const inputValue = inputRef.current.value.trim();
-            if(inputValue === '') {
-                alert("enter some name first");
-            }
-            else{
+            if(buttonClicked === "Enter Folder Name") {
                 const newFolders = [...foldersArray, {
                     id: inputValue,
                     title: inputValue,
                     notes: []
                 }]
                 setFoldersArray(newFolders);
-                setCreateFolderClicked(false);
             }
+            else if(buttonClicked === "Enter Note Name") {
+                const newNotes = [...notesArray, {
+                    id: inputValue,
+                    title: inputValue,
+                }]
+                setNotesArray(newNotes);
+            }
+            setCreateFileClicked(false);
+        }
+        console.log(folders);
+    }
+
+    const handleCanceled = () => {
+        setCreateFileClicked(false);
+    }
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            const inputValue = inputRef.current.value.trim();
+        if(inputValue === '') {
+            alert("Ënter a name first")
+        }
+        else{
+            if(buttonClicked === "Enter Folder Name") {
+                const newFolders = [...foldersArray, {
+                    id: inputValue,
+                    title: inputValue,
+                    notes: []
+                }]
+                setFoldersArray(newFolders);
+            }
+            else if(buttonClicked === "Enter Note Name") {
+                const newNotes = [...notesArray, {
+                    id: inputValue,
+                    title: inputValue,
+                }]
+                setNotesArray(newNotes);
+            }
+            setCreateFileClicked(false);
+        }
         }
     }
 
@@ -86,7 +108,7 @@ const PlaygroundAside = () => {
                 </div>
 
                 <div>
-                    {createFolderClicked && 
+                    {createFileClicked && 
                         <div className='flex flex-row justify-around poiret-20 items-center playgroundAside-form p-1'>
                             <input onKeyDown={handleKeyPress} className='w-9/12' type='text' ref={inputRef} placeholder={buttonClicked} />
                             <div className='flex flex-row justify-center items-center gap-2'>
@@ -99,7 +121,7 @@ const PlaygroundAside = () => {
                     {
                         foldersArray.map((folder) => {
                             return <div key={folder.id}>
-                                <div className='flex flex-col'>
+                                <div className='flex flex-col cursor-pointer border-bottom'>
                                     <div className='flex items-center p-1 folder'>
                                         <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
                                         <p className='ml-1 sulphur-20'>{folder.title}</p>
@@ -107,7 +129,7 @@ const PlaygroundAside = () => {
 
                                     {
                                         folder.notes.map((notes) => {
-                                            return <div key={notes.id} className='flex flex-col items-center'>
+                                            return <div key={notes.id} className='flex flex-col items-center cursor-pointer border-bottom'>
                                                 <div className='flex w-full p-2 items-center'>
                                                     <img className='w-5 h-5 ml-4' alt='' src={fileIcon} />
                                                     <p className='ml-1 sulphur-15'>{notes.title}</p>
@@ -118,6 +140,17 @@ const PlaygroundAside = () => {
 
                                 </div>
                             </div>
+                        })
+                    }
+
+
+                    { notesArray.map((notes) => {
+                            return <div key={notes.id} className='flex flex-col cursor-pointer border-bottom'>
+                                        <div className='flex items-center p-1 folder'>
+                                            <img className='w-5 h-5 ml-2' alt='' src={fileIcon} />
+                                            <p className='ml-1 sulphur-20'>{notes.title}</p>
+                                        </div>
+                                    </div>
                         })
                     }
 

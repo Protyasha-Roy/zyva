@@ -88,3 +88,7 @@ code {
   font-family: 'Sulphur Point', sans-serif;
   font-size: 50px;
 }
+
+.border-bottom {
+  border-bottom: 1px solid white;
+}
