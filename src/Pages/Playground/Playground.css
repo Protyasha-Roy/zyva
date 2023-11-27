@@ -25,6 +25,15 @@
     border-radius: 0px;
   }
 
+.playgroundAside-form input {
+    background: transparent; 
+    border-bottom: 1px solid white;
+    padding: 3px; 
+    margin: 2px;
+}
+
+  
+
   /* .speech-container::-webkit-scrollbar-track {
     background-color: #8fb5f3;
   } */
