@@ -130,7 +130,7 @@ const PlaygroundAside = () => {
 
 
     return (
-        <aside className='col-span-1 bg-black overflow-hidden'>
+        <aside className='col-span-1 bg-black aside-section'>
                 <div className='p-1 text-blue-400 flex flex-row justify-around sulphur-15 border-white'>
                     <p>Instructions</p>
                     <p className='text-white'>|</p>
@@ -171,7 +171,7 @@ const PlaygroundAside = () => {
                                             <div className='flex flex-col cursor-pointer border-bottom'>
                                                 <div className='flex items-center p-1 folder'>
                                                     <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
-                                                    <p className='ml-1 sulphur-20'>{truncateText(folder.title, 26)}</p>
+                                                    <p className='ml-1 sulphur-20'>{truncateText(folder.title, 15)}</p>
                                                     <img name="createNoteButton" className='cursor-pointer w-4 h-4 ml-auto' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteInsideFolder", folder.id)} />
                                                 </div>
 
