@@ -18,6 +18,7 @@ const PlaygroundAside = () => {
     const [placeholder, setPlaceholder] = useState("");
     const [fileTypeName, setFileTypeName] = useState("");
     const [selectedFolderId, setSelectedFolderId] = useState(null);
+    const [isFieldEmpty, setIsFieldEmpty] = useState(false);
 
 
     const handleCreateNotes = (name, folderId) => {
@@ -46,7 +47,7 @@ const PlaygroundAside = () => {
         const inputValue = inputRef.current.value.trim();
         
         if(inputValue === '') {
-            alert("enter a name first");
+            setIsFieldEmpty(true);
         }
         else{
             if(fileTypeName === "folder") {
@@ -63,8 +64,9 @@ const PlaygroundAside = () => {
                 
                   
                   setIsCreateNoteClicked(false);
-                }
-                else if(fileTypeName === "singleNote") {
+            }
+
+            else if(fileTypeName === "singleNote") {
                     const newSingleNote = {
                         isfolder: false,
                         id: inputValue,
@@ -77,8 +79,9 @@ const PlaygroundAside = () => {
                       }));
                     
                       setIsCreateNoteClicked(false);
-                }
-                else if(fileTypeName === "noteInsideFolder") {
+            }
+            
+            else if(fileTypeName === "noteInsideFolder") {
                     const newNoteInsideFolder = {
                         isfolder: false,
                         id: inputValue,
@@ -102,7 +105,8 @@ const PlaygroundAside = () => {
                     
                     setIsCreateNoteClicked(false);
                 }
-            }
+                setIsFieldEmpty(false);
+        }
     }
 
     const handleCanceled = () => {
@@ -135,13 +139,19 @@ const PlaygroundAside = () => {
                 <div>
                     
                     {isCreateNoteClicked &&  
-                    <div className='flex flex-row justify-around poiret-20 items-center playgroundAside-form p-1'>
+                    <div className='flex flex-col'>
+<div className='flex flex-row justify-around poiret-20 items-center playgroundAside-form p-1'>
                         <input onKeyDown={handleKeyPress} className='w-9/12' type='text' ref={inputRef} placeholder={placeholder} />
                         <div className='flex flex-row justify-center items-center gap-2'>
                             <img onClick={handleChecked} className='cursor-pointer w-5 h-5' alt='' src={checkedIcon} />
                             <img onClick={handleCanceled} className='cursor-pointer w-5 h-5' alt='' src={cancelIcon} />
-                            </div>
-                    </div> }
+                        </div>
+                    </div>
+                       {
+                        isFieldEmpty &&  <p className='text-center text-red-300 sulphur-15'>Empty spaces are not allowed!</p>
+                       }
+                    </div>
+                     }
 
 
                     
