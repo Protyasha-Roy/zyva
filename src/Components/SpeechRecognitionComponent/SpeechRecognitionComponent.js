@@ -60,13 +60,13 @@ const SpeechRecognitionComponent = () => {
     <div>
       <label>
         Select Language:
-        <select value={language} onChange={handleLanguageChange}>
+        <select className='ml-10 text-black' value={language} onChange={handleLanguageChange}>
           <option value="en-US">English (United States)</option>
           <option value="es-ES">Spanish (Spain)</option>
           {/* Add more language options as needed */}
         </select>
       </label>
-      <button onClick={toggleRecognition}>
+      <button className='ml-10' onClick={toggleRecognition}>
         {isRecognitionActive ? 'Stop' : 'Start'} Speech Recognition
       </button>
       <p>Transcript: {transcript}</p>
