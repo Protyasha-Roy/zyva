@@ -32,7 +32,8 @@ const PlaygroundAside = () => {
                 setFileTypeName("singleNote");
                 break;
             case "createNoteInsideFolder":
-                setSelectedFolderId(folderId)
+                setPlaceholder("Enter Note Name");
+                setSelectedFolderId(folderId);
                 setFileTypeName("noteInsideFolder");
                 break;
             default:
