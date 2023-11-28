@@ -6,14 +6,10 @@ import checkedIcon from '../../assets/images/Icon-images/checked.png';
 import cancelIcon from '../../assets/images/Icon-images/cancel.png';
 
 
-const PlaygroundAside = () => {
+const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState}) => {
     const inputRef = useRef(null);
 
 
-    const [filesAndFolders, setFilesAndFolders] = useState({
-        folders: [],
-        singleNotes: []
-    });
     const [isCreateNoteClicked, setIsCreateNoteClicked] = useState(false);
     const [placeholder, setPlaceholder] = useState("");
     const [fileTypeName, setFileTypeName] = useState("");
@@ -58,7 +54,7 @@ const PlaygroundAside = () => {
                     title: inputValue,
                     notes: []
                 }
-                setFilesAndFolders((prevFilesAndFolders) => ({
+                updateFilesAndFoldersState((prevFilesAndFolders) => ({
                     ...prevFilesAndFolders,
                     folders: [...prevFilesAndFolders.folders, newFolder],
                   }));
@@ -74,7 +70,7 @@ const PlaygroundAside = () => {
                         title: inputValue,
                         content: ""
                     }
-                    setFilesAndFolders((prevFilesAndFolders) => ({
+                    updateFilesAndFoldersState((prevFilesAndFolders) => ({
                         ...prevFilesAndFolders,
                         singleNotes: [...prevFilesAndFolders.singleNotes, newSingleNote],
                       }));
@@ -99,7 +95,7 @@ const PlaygroundAside = () => {
                         return folder;
                     });
     
-                    setFilesAndFolders((prevFilesAndFolders) => ({
+                    updateFilesAndFoldersState((prevFilesAndFolders) => ({
                         ...prevFilesAndFolders,
                         folders: updatedFolders,
                     }));
