@@ -120,6 +120,14 @@ const PlaygroundAside = () => {
         }
     }
 
+    const truncateText = (text, maxLength) => {
+        if (text.length <= maxLength) {
+            return text;
+        } else {
+            return text.substring(0, maxLength) + '...';
+        }
+    };
+
 
     return (
         <aside className='col-span-1 bg-black overflow-hidden'>
@@ -141,13 +149,13 @@ const PlaygroundAside = () => {
                     
                     {isCreateNoteClicked &&  
                     <div className='flex flex-col'>
-<div className='flex flex-row justify-around poiret-20 items-center playgroundAside-form p-1'>
-                        <input onKeyDown={handleKeyPress} className='w-9/12' type='text' ref={inputRef} placeholder={placeholder} />
-                        <div className='flex flex-row justify-center items-center gap-2'>
-                            <img onClick={handleChecked} className='cursor-pointer w-5 h-5' alt='' src={checkedIcon} />
-                            <img onClick={handleCanceled} className='cursor-pointer w-5 h-5' alt='' src={cancelIcon} />
+                        <div className='flex flex-row justify-around poiret-20 items-center playgroundAside-form p-1'>
+                            <input onKeyDown={handleKeyPress} className='w-9/12' type='text' ref={inputRef} placeholder={placeholder} />
+                            <div className='flex flex-row justify-center items-center gap-2'>
+                                <img onClick={handleChecked} className='cursor-pointer w-5 h-5' alt='' src={checkedIcon} />
+                                <img onClick={handleCanceled} className='cursor-pointer w-5 h-5' alt='' src={cancelIcon} />
+                            </div>
                         </div>
-                    </div>
                        {
                         isFieldEmpty &&  <p className='text-center text-red-300 sulphur-15'>Empty spaces are not allowed!</p>
                        }
@@ -163,16 +171,16 @@ const PlaygroundAside = () => {
                                             <div className='flex flex-col cursor-pointer border-bottom'>
                                                 <div className='flex items-center p-1 folder'>
                                                     <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
-                                                    <p className='ml-1 sulphur-20'>{folder.title}</p>
+                                                    <p className='ml-1 sulphur-20'>{truncateText(folder.title, 26)}</p>
                                                     <img name="createNoteButton" className='cursor-pointer w-4 h-4 ml-auto' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteInsideFolder", folder.id)} />
                                                 </div>
 
                                                 {
                                                     folder.notes.length > 0 && folder.notes.map(note => {
-                                                        return <div key={note.id} className='flex flex-col items-center cursor-pointer border-bottom'>
+                                                        return <div key={note.id} className='flex flex-col items-center cursor-pointer border-bottom overflow-hidden'>
                                                         <div className='flex w-full p-2 items-center'>
                                                             <img className='w-5 h-5 ml-4' alt='' src={fileIcon} />
-                                                            <p className='ml-1 sulphur-15'>{note.title}</p>
+                                                            <p className='ml-1 sulphur-15'>{truncateText(note.title, 26)}</p>
                                                         </div>
                                                     </div>
                                                     })
