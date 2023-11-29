@@ -45,7 +45,6 @@ const PlaygroundEditor = () => {
               firstLetterAfterNewLine +
               result.substring(indexOfFirstLetter + 1);
           }
-          console.log(`First letter after new line at index ${newLineIndex}:`);
         });
     
         return result;
@@ -91,8 +90,6 @@ const PlaygroundEditor = () => {
     
         const transcriptWithCapitalization = capitalizeFirstLetterAfterNewLine(transcript);
         const modifiedTranscript = replaceWords(transcriptWithCapitalization, replacementPairs);
-    
-        console.log("Modified Transcript:", modifiedTranscript);
     
         setModifiedTranscript(modifiedTranscript);
       }
