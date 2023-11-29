@@ -5,19 +5,21 @@ import deleteIcon from '../../assets/images/Icon-images/delete.png';
 import downloadPdfIcon from '../../assets/images/Icon-images/download-pdf.png';
 import playButton from '../../assets/images/Icon-images/play-button.png';
 import pauaseButton from '../../assets/images/Icon-images/pause-button.png';
-import resetButton from '../../assets/images/Icon-images/reset.png';
+
 
 import { Link } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 const PlaygroundEditor = () => {
-    const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript } = useSpeechRecognition({clearTranscriptOnListen: false});
+    const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable } = useSpeechRecognition({clearTranscriptOnListen: false});
     
     const [modifiedTranscript, setModifiedTranscript] = useState('');
+    const [isPlayed, setIsplayed] = useState(false);
 
     
     const startListening = () => {
       SpeechRecognition.startListening({ continuous: true });
+      setIsplayed(true);
     }
 
     useEffect(() => {
@@ -99,12 +101,8 @@ const PlaygroundEditor = () => {
 
     const stopListening = () => {
         SpeechRecognition.stopListening();
+        setIsplayed(false);
     } 
-
-    const resetModifiedTranscript = () => {
-      resetTranscript();
-      setModifiedTranscript('');
-    }
   
     if (!browserSupportsSpeechRecognition) {
       return null
@@ -138,9 +136,7 @@ const PlaygroundEditor = () => {
         </div>
 
         <div className='p-2 flex flex-row justify-around items-center w-80 m-auto'>
-            <img className='cursor-pointer' onClick={startListening} src={playButton} alt='' />
-            <img className='cursor-pointer' onClick={stopListening} src={pauaseButton} alt='' />
-            <img className='cursor-pointer' onClick={resetModifiedTranscript} src={resetButton} alt='' />
+            {isPlayed ? <img className='cursor-pointer' onClick={stopListening} src={pauaseButton} alt='' /> : <img className='cursor-pointer' onClick={startListening} src={playButton} alt='' />}
         </div>
       </div>
     </section>
