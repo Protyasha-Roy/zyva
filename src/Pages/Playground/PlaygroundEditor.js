@@ -64,8 +64,29 @@ const PlaygroundEditor = () => {
       if (transcript !== '') {
         const replacementPairs = [
           ['period', '.'],
-          ['example', 'replacement'],
-          ['new line', '']
+          ['new line', ''],
+          ['comma', ','],
+          ['question mark', '?'],
+          ['exclamatory sign', '!'],
+          ['single quote', "'"],
+          ['double quote', '"'],
+          ['hyphen', '-'],
+          ['colon', ':'],
+          ['semicolon', ';'],
+          ['first bracelet', '('],
+          ['first brace right', ')'],
+          ['second bracelet', '{'],
+          ['second brace right', '}'],
+          ['third bracelet', '['],
+          ['third brace right', ']'],
+          ['hash', '#'],
+          ['dollar sign', '$'],
+          ['percentage sign', '%'],
+          ['space sign', ' '],
+          ['plus sign', '+'],
+          ['minus sign', '-'],
+          ['asterisk', '*'],
+          ['slash', '/'],
         ];
     
         const transcriptWithCapitalization = capitalizeFirstLetterAfterNewLine(transcript);
@@ -77,9 +98,7 @@ const PlaygroundEditor = () => {
       }
     }, [transcript]);
     
-    
-    
-
+  
 
     const stopListening = () => {
         SpeechRecognition.stopListening();
