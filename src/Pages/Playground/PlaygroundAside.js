@@ -4,9 +4,11 @@ import fileIcon from '../../assets/images/Icon-images/document.png';
 import './Playground.css';
 import checkedIcon from '../../assets/images/Icon-images/checked.png';
 import cancelIcon from '../../assets/images/Icon-images/cancel.png';
+import { v4 as uuidv4 } from 'uuid';
 
+const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState, updateSelectedFile}) => {
 
-const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState}) => {
+    const uniqueId = uuidv4();
     const inputRef = useRef(null);
 
 
@@ -39,7 +41,7 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState}) => {
         setIsCreateNoteClicked(true);
     }
 
-
+    
     const handleChecked = () => {
         const inputValue = inputRef.current.value.trim();
         
@@ -50,25 +52,32 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState}) => {
             if(fileTypeName === "folder") {
                 const newFolder = {
                     isfolder: true,
-                    id: inputValue,
+                    isSingleNote: false,
+                    isFileInsideFolder: true,
+                    id: uniqueId,
                     title: inputValue,
                     notes: []
                 }
-                updateFilesAndFoldersState((prevFilesAndFolders) => ({
-                    ...prevFilesAndFolders,
-                    folders: [...prevFilesAndFolders.folders, newFolder],
-                  }));
+
+                  updateFilesAndFoldersState((prevFilesAndFolders) => {
+                    const updatedState = {...prevFilesAndFolders, folders: [...prevFilesAndFolders.folders, newFolder]};
+
+                    //post logic here..
+
+                    return updatedState;
+                  });
                 
-                  
                   setIsCreateNoteClicked(false);
-            }
+                }
 
             else if(fileTypeName === "singleNote") {
                     const newSingleNote = {
                         isfolder: false,
-                        id: inputValue,
+                        isSingleNote: true,
+                        isFileInsideFolder: true,
+                        id: uniqueId,
                         title: inputValue,
-                        content: ""
+                        content: ''
                     }
                     updateFilesAndFoldersState((prevFilesAndFolders) => ({
                         ...prevFilesAndFolders,
@@ -81,9 +90,11 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState}) => {
             else if(fileTypeName === "noteInsideFolder") {
                     const newNoteInsideFolder = {
                         isfolder: false,
-                        id: inputValue,
+                        isSingleNote: false,
+                        isFileInsideFolder: true,
+                        id: uniqueId,
                         title: inputValue,
-                        content: ""
+                        content: ''
                     }
                     const updatedFolders = filesAndFolders.folders.map(folder => {
                         if (folder.id === selectedFolderId) {
@@ -106,8 +117,10 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState}) => {
         }
     }
 
+
     const handleCanceled = () => {
         setIsCreateNoteClicked(false);
+        setIsFieldEmpty(false);
     }
 
     const handleKeyPress = (event) => {
@@ -174,7 +187,7 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState}) => {
                                                 {
                                                     folder.notes.length > 0 && folder.notes.map(note => {
                                                         return <div key={note.id} className='flex flex-col items-center cursor-pointer border-bottom overflow-hidden'>
-                                                        <div className='flex w-full p-2 items-center'>
+                                                        <div onClick={() => updateSelectedFile(note.id)} className='flex w-full p-2 items-center'>
                                                             <img className='w-5 h-5 ml-4' alt='' src={fileIcon} />
                                                             <p className='ml-1 sulphur-15'>{truncateText(note.title, 26)}</p>
                                                         </div>

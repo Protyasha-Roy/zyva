@@ -9,14 +9,21 @@ const Playground = () => {
         folders: [],
         singleNotes: []
     });
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const updateSelectedFile = (newState) => {
+        setSelectedFile(newState);
+    }
+
+    console.log(selectedFile);
 
     const updateFilesAndFoldersState = (newState) => {
         setFilesAndFolders(newState);
       };
     return (
         <section className='grid grid-cols-6 h-screen'>
-            <PlaygroundAside filesAndFolders={filesAndFolders} updateFilesAndFoldersState={updateFilesAndFoldersState} />
-            <PlaygroundEditor filesAndFolders={filesAndFolders} updateFilesAndFoldersState={updateFilesAndFoldersState} />
+            <PlaygroundAside updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders} updateFilesAndFoldersState={updateFilesAndFoldersState} />
+            <PlaygroundEditor updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders} updateFilesAndFoldersState={updateFilesAndFoldersState} />
         </section>
     );
 };
