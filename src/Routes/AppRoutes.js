@@ -5,8 +5,6 @@ import GetAccess from "../Pages/GetAccess/GetAccess";
 import Home from "../Pages/Home/Home";
 import Instructions from "../Pages/Instructions/Instructions";
 import Playground from "../Pages/Playground/Playground";
-import SpeechRecognitionComponent from '../Components/SpeechRecognitionComponent/SpeechRecognitionComponent';
-import TextConverter from '../Components/TextConverter';
 
 function AppRoutes() {
   return (
@@ -18,8 +16,6 @@ function AppRoutes() {
         <Route path="/get-access" element={<GetAccess/>} />
         <Route path="/playground" element={<Playground/>} />
         <Route component={() => <div>404 Not Found</div>} />
-        <Route path="/speechRecognition" element={<SpeechRecognitionComponent/>} />
-        <Route path="/text" element={<TextConverter/>} />
       </Routes>
     </Router>
   );

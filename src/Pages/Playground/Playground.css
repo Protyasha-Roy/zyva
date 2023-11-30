@@ -17,6 +17,10 @@
     height: 72vh;
 }
 
+::selection {
+    background-color: gray;
+    color: white;
+}
 .speech-container::-webkit-scrollbar {
     width: 6px;
 }

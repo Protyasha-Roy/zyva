@@ -1,27 +1,82 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import profileIcon from '../../assets/images/Icon-images/account.png';
 import editIcon from '../../assets/images/Icon-images/edit.png';
 import deleteIcon from '../../assets/images/Icon-images/delete.png';
 import downloadPdfIcon from '../../assets/images/Icon-images/download-pdf.png';
 import playButton from '../../assets/images/Icon-images/play-button.png';
 import pauaseButton from '../../assets/images/Icon-images/pause-button.png';
-
+import './keywordsStyles.css';
 
 import { Link } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import ContextMenu from './ContextMenu';
 
 const PlaygroundEditor = () => {
     const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable } = useSpeechRecognition({clearTranscriptOnListen: false});
     
-    const [modifiedTranscript, setModifiedTranscript] = useState('');
     const [isPlayed, setIsplayed] = useState(false);
+    const [selectedText, setSelectedText] = useState('');
+    const [modifiedInnerHTML, setModifiedInnerHTML] = useState(''); 
 
+
+  const [contextMenu, setContextMenu] = useState({ top: 0, left: 0, visible: false });
+  const editorRef = useRef();
+
+  const handleMouseUp = (e) => {
+    const selection = window.getSelection();
+    const selectedText = selection.toString().trim();
+
+    if (selectedText !== '') {
+      const range = selection.getRangeAt(0).getBoundingClientRect();
+      setContextMenu({
+        top: range.bottom + window.scrollY,
+        left: range.left + window.scrollX + range.width / 2,
+        visible: true,
+      });
+      setSelectedText(selectedText);
+    } else {
+      setContextMenu({ top: 0, left: 0, visible: false });
+    }
+  };
+
+  const handleContextMenuSelect = (action) => {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const text = range.toString();
+  
+    switch (action) {
+      case 'center':
+        
+        break;
+  
+      case 'font-size-small':
+        document.execCommand('fontSize', false, '3'); // You can adjust the size value
+        break;
+  
+      // Add more cases for other style actions
+  
+      default:
+        break;
+    }
+  
+    // Clear the selection after applying styles
+    selection.removeAllRanges();
+    setContextMenu({ top: 0, left: 0, visible: false });
+  };
+  
+  
+  useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => document.removeEventListener('mouseup', handleMouseUp);
+  }, []);
     
+    
+  //Speech recognition functoins
     const startListening = () => {
       SpeechRecognition.startListening({ continuous: true });
       setIsplayed(true);
     }
-
+    
     useEffect(() => {
       const getNewLineIndices = () => {
         const indices = [];
@@ -32,6 +87,8 @@ const PlaygroundEditor = () => {
         }
         return indices;
       };
+
+    
     
       const capitalizeFirstLetterAfterNewLine = (input) => {
         let result = input;
@@ -51,14 +108,16 @@ const PlaygroundEditor = () => {
     
         return result;
       };
+
     
       const replaceWords = (input, replacementPairs) => {
         let result = input;
+
     
         replacementPairs.forEach(([originalWord, replacement]) => {
           result = result.replace(new RegExp(originalWord, 'gi'), replacement);
         });
-    
+        
         return result;
       };
     
@@ -88,14 +147,23 @@ const PlaygroundEditor = () => {
           ['minus sign', '-'],
           ['asterisk', '*'],
           ['slash', '/'],
+          ['next line', '<br />'],
+          ['heading start', "<h1 class='heading'>"],
+          ['heading close', '</h1>'],
+          ['topic start', "<h3 class='topic'>"],
+          ['topic close', '</h3>'],
         ];
     
         const transcriptWithCapitalization = capitalizeFirstLetterAfterNewLine(transcript);
-        const modifiedTranscript = replaceWords(transcriptWithCapitalization, replacementPairs);
+        const newlyModifiedTranscript = replaceWords(transcriptWithCapitalization, replacementPairs);
     
-        setModifiedTranscript(modifiedTranscript);
+        setModifiedInnerHTML(newlyModifiedTranscript);
       }
     }, [transcript]);
+
+    useEffect(() => {
+      editorRef.current.innerHTML = modifiedInnerHTML;
+    }, [modifiedInnerHTML])
     
   
 
@@ -112,10 +180,9 @@ const PlaygroundEditor = () => {
         return null;
     }
 
-
     
   return (
-    <section className='col-span-5 flex flex-col items-center p-2'>
+    <section style={{ position: 'relative'}} className='col-span-5 flex flex-col items-center p-2'>
       <div className='flex justify-between w-11/12 items-center'>
         <Link to='/' className='sulphur-30 cursor'>zyva</Link>
         <img className='w-10 h-10' src={profileIcon} alt="" />
@@ -131,14 +198,16 @@ const PlaygroundEditor = () => {
           </div>
         </div>
 
-        <div className='speech-container mt-2 rounded p-3 sulphur'>
-          <p>{modifiedTranscript}</p>
+        <div ref={editorRef}
+         className='speech-container mt-2 rounded p-3 sulphur'>
+
         </div>
 
         <div className='p-2 flex flex-row justify-around items-center w-80 m-auto'>
             {isPlayed ? <img className='cursor-pointer' onClick={stopListening} src={pauaseButton} alt='' /> : <img className='cursor-pointer' onClick={startListening} src={playButton} alt='' />}
         </div>
       </div>
+      <ContextMenu {...contextMenu} onSelect={handleContextMenuSelect} />
     </section>
   );
 };
