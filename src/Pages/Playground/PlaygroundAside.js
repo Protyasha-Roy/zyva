@@ -41,7 +41,7 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState, updateSel
         setIsCreateNoteClicked(true);
     }
 
-    
+
     const handleChecked = () => {
         const inputValue = inputRef.current.value.trim();
         
@@ -202,9 +202,9 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState, updateSel
                         {
                             filesAndFolders.singleNotes.length > 0 && filesAndFolders.singleNotes.map(note => {
                                 return <div key={note.id} className='flex flex-col cursor-pointer border-bottom'>
-                                            <div className='flex items-center p-1 folder'>
+                                            <div onClick={() => updateSelectedFile(note.id)} className='flex items-center p-1 folder'>
                                                 <img className='w-5 h-5 ml-2' alt='' src={fileIcon} />
-                                                <p className='ml-1 sulphur-20'>{note.id}</p>
+                                                <p className='ml-1 sulphur-20'>{note.title}</p>
                                             </div>
                                         </div>
                             })
