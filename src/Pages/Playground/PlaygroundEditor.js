@@ -12,11 +12,12 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import ContextMenu from './ContextMenu';
 
 const PlaygroundEditor = () => {
-    const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable } = useSpeechRecognition({clearTranscriptOnListen: false});
+    const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript} = useSpeechRecognition({clearTranscriptOnListen: false});
     
     const [isPlayed, setIsplayed] = useState(false);
     const [selectedText, setSelectedText] = useState('');
     const [modifiedInnerHTML, setModifiedInnerHTML] = useState(''); 
+    const [modifiedInnerText, setModifiedInnerText] = useState('');
 
 
   const [contextMenu, setContextMenu] = useState({ top: 0, left: 0, visible: false });
@@ -133,11 +134,11 @@ const PlaygroundEditor = () => {
           ['hyphen', '-'],
           ['colon', ':'],
           ['semicolon', ';'],
-          ['first bracelet', '('],
+          ['first bracket', '('],
           ['first brace right', ')'],
-          ['second bracelet', '{'],
+          ['second bracket', '{'],
           ['second brace right', '}'],
-          ['third bracelet', '['],
+          ['third bracket', '['],
           ['third brace right', ']'],
           ['hash', '#'],
           ['dollar sign', '$'],
@@ -152,6 +153,19 @@ const PlaygroundEditor = () => {
           ['heading close', '</h1>'],
           ['topic start', "<h3 class='topic'>"],
           ['topic close', '</h3>'],
+          ['note start', '<p>'],
+          ['note close', '</p>'],
+          ['list start', '<li>'],
+          ['list close', '</li>'],
+          ['coding start', '<code>'],
+          ['coding close', '</code>'],
+          ['underline start', '<u>'],
+          ['underline close', '</u>'],
+          ['bold start', '<b>'],
+          ['bold close', '</b>'],
+          ['italic start', '<i>'],
+          ['italic close', '</i>'],
+          ['horizontal line', '<hr />']
         ];
     
         const transcriptWithCapitalization = capitalizeFirstLetterAfterNewLine(transcript);
@@ -163,8 +177,16 @@ const PlaygroundEditor = () => {
 
     useEffect(() => {
       editorRef.current.innerHTML = modifiedInnerHTML;
-    }, [modifiedInnerHTML])
+      setModifiedInnerText(editorRef.current.innerText);
+    }, [modifiedInnerHTML, modifiedInnerText])
     
+
+    useEffect(() => {
+      if(modifiedInnerText.includes('reset')) {
+        editorRef.current.innerHTML = '';
+        resetTranscript();
+      }
+    }, [modifiedInnerText, resetTranscript])
   
 
     const stopListening = () => {
@@ -200,7 +222,7 @@ const PlaygroundEditor = () => {
 
         <div ref={editorRef}
          className='speech-container mt-2 rounded p-3 sulphur'>
-
+        
         </div>
 
         <div className='p-2 flex flex-row justify-around items-center w-80 m-auto'>
