@@ -165,7 +165,7 @@ const PlaygroundEditor = () => {
           ['bold close', '</b>'],
           ['italic start', '<i>'],
           ['italic close', '</i>'],
-          ['horizontal line', '<hr />']
+          ['horizontal line', '<hr />'],
         ];
     
         const transcriptWithCapitalization = capitalizeFirstLetterAfterNewLine(transcript);
@@ -184,8 +184,9 @@ const PlaygroundEditor = () => {
     useEffect(() => {
       if(modifiedInnerText.includes('reset')) {
         editorRef.current.innerHTML = '';
+        editorRef.current.innerText = '';
         resetTranscript();
-      }
+      } 
     }, [modifiedInnerText, resetTranscript])
   
 
