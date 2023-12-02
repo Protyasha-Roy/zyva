@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Playground.css';
 import PlaygroundAside from './PlaygroundAside';
 import PlaygroundEditor from './PlaygroundEditor';
+import axios from 'axios';
 
 
 const Playground = () => {
-    const [filesAndFolders, setFilesAndFolders] = useState({
-        folders: [],
-        singleNotes: []
-    });
+    const [filesAndFolders, setFilesAndFolders] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get('http://localhost:5000/allFilesAndFolders');
+            setFilesAndFolders(response.data.reverse());
+          } catch (error) {
+            console.error('Error fetching documents:', error);
+          }
+        };
+
+        const intervalId = setInterval(fetchData, 500); 
+      
+        return () => clearInterval(intervalId);
+      }, []);
+      
 
     const updateSelectedFile = (newState) => {
         setSelectedFile(newState);
     }
-
-    console.log(selectedFile);
 
     const updateFilesAndFoldersState = (newState) => {
         setFilesAndFolders(newState);
