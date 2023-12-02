@@ -7,7 +7,8 @@ import axios from 'axios';
 
 const Playground = () => {
     const [filesAndFolders, setFilesAndFolders] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState({customId:null, parentId: null});
+    const [selectedFileData, setSelectedFileData] = useState([]);
 
 
     useEffect(() => {
@@ -20,16 +21,30 @@ const Playground = () => {
           }
         };
 
-        const intervalId = setInterval(fetchData, 500); 
+        fetchData();
+      }, [filesAndFolders]);
       
-        return () => clearInterval(intervalId);
-      }, []);
       
-
-    const updateSelectedFile = (newState) => {
-        setSelectedFile(newState);
-    }
-
+      const updateSelectedFile = (noteId, noteParentId) => {
+        setSelectedFile({ customId: noteId, parentId: noteParentId });
+      };
+      
+      useEffect(() => {
+          const fetchSelectedFileData = async () => {
+            if(selectedFile.customId !== null && selectedFile.parentId !== null) {
+                try {
+                  const response = await axios.get(`http://localhost:5000/note/${selectedFile.customId}/${selectedFile.parentId}`);
+                  setSelectedFileData(response.data);
+                  console.log(response.data)
+                } catch (error) {
+                  console.error('Error fetching documents:', error);
+                }
+            }
+          };
+        fetchSelectedFileData();
+      }, [selectedFile]);
+      
+      
     const updateFilesAndFoldersState = (newState) => {
         setFilesAndFolders(newState);
       };
