@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import folderIcon from '../../assets/images/Icon-images/folder.png';
 import fileIcon from '../../assets/images/Icon-images/document.png';
 import './Playground.css';
 import checkedIcon from '../../assets/images/Icon-images/checked.png';
 import cancelIcon from '../../assets/images/Icon-images/cancel.png';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState, updateSelectedFile}) => {
 
@@ -51,53 +52,93 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState, updateSel
         else{
             if(fileTypeName === "folder") {
                 const newFolder = {
+                    fileType: fileTypeName,
                     isfolder: true,
                     isSingleNote: false,
-                    isFileInsideFolder: true,
-                    id: uniqueId,
+                    isFileInsideFolder: false,
+                    customId: uniqueId,
                     title: inputValue,
                     notes: []
                 }
 
+                axios.post('http://localhost:5000/createFilesAndFolders', newFolder)
+                            .then(response => {
+                                console.log('Response:', response.data);
+                                // Handle the response as needed
+                            })
+                            .catch(error => {
+                            console.error('Error:', error);
+                            // Handle errors
+                        });
+
                   updateFilesAndFoldersState((prevFilesAndFolders) => {
-                    const updatedState = {...prevFilesAndFolders, folders: [...prevFilesAndFolders.folders, newFolder]};
+                    const updatedfilesAndFolders = {...prevFilesAndFolders, folders: [...prevFilesAndFolders.folders, newFolder]};
 
-                    //post logic here..
+                        return updatedfilesAndFolders;
+                    });
 
-                    return updatedState;
-                  });
                 
                   setIsCreateNoteClicked(false);
                 }
 
             else if(fileTypeName === "singleNote") {
                     const newSingleNote = {
+                    fileType: fileTypeName,
                         isfolder: false,
                         isSingleNote: true,
-                        isFileInsideFolder: true,
-                        id: uniqueId,
+                        isFileInsideFolder: false,
+                        customId: uniqueId,
                         title: inputValue,
                         content: ''
                     }
-                    updateFilesAndFoldersState((prevFilesAndFolders) => ({
-                        ...prevFilesAndFolders,
-                        singleNotes: [...prevFilesAndFolders.singleNotes, newSingleNote],
-                      }));
+                    // updateFilesAndFoldersState((prevFilesAndFolders) => ({
+                    //     ...prevFilesAndFolders,
+                    //     singleNotes: [...prevFilesAndFolders.singleNotes, newSingleNote],
+                    //   }));
+
+                    axios.post('http://localhost:5000/createFilesAndFolders', newSingleNote)
+      .then(response => {
+        console.log('Response:', response.data);
+        // Handle the response as needed
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Handle errors
+      });
+
+
+                    updateFilesAndFoldersState((prevFilesAndFolders) => {
+                        const updatedfilesAndFolders = {...prevFilesAndFolders, singleNotes: [...prevFilesAndFolders.singleNotes, newSingleNote]};
+                    return updatedfilesAndFolders;
+                    });
                     
                       setIsCreateNoteClicked(false);
             }
             
             else if(fileTypeName === "noteInsideFolder") {
                     const newNoteInsideFolder = {
+                    fileType: fileTypeName,
                         isfolder: false,
                         isSingleNote: false,
                         isFileInsideFolder: true,
-                        id: uniqueId,
+                        belongsToFolderId: selectedFolderId,
+                        customId: uniqueId,
                         title: inputValue,
                         content: ''
                     }
+
+                    axios.post('http://localhost:5000/createFilesAndFolders', newNoteInsideFolder)
+                    .then(response => {
+                      console.log('Response:', response.data);
+                      // Handle the response as needed
+                    })
+                    .catch(error => {
+                      console.error('Error:', error);
+                      // Handle errors
+                    });
+
                     const updatedFolders = filesAndFolders.folders.map(folder => {
-                        if (folder.id === selectedFolderId) {
+                        if (folder.customId === selectedFolderId) {
                             return {
                                 ...folder,
                                 notes: [...folder.notes, newNoteInsideFolder]
@@ -136,7 +177,7 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState, updateSel
             return text.substring(0, maxLength) + '...';
         }
     };
-
+    
 
     return (
         <aside className='col-span-1 bg-black aside-section'>
@@ -176,17 +217,17 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState, updateSel
                     <div>
                         {
                             filesAndFolders.folders.length > 0 && filesAndFolders.folders.map(folder => {
-                                return <div key={folder.id}>
+                                return <div key={folder.customId}>
                                             <div className='flex flex-col cursor-pointer border-bottom'>
                                                 <div className='flex items-center p-1 folder'>
                                                     <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
                                                     <p className='ml-1 sulphur-20'>{truncateText(folder.title, 15)}</p>
-                                                    <img name="createNoteButton" className='cursor-pointer w-4 h-4 ml-auto' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteInsideFolder", folder.id)} />
+                                                    <img name="createNoteButton" className='cursor-pointer w-4 h-4 ml-auto' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteInsideFolder", folder.customId)} />
                                                 </div>
 
                                                 {
                                                     folder.notes.length > 0 && folder.notes.map(note => {
-                                                        return <div key={note.id} className='flex flex-col items-center cursor-pointer border-bottom overflow-hidden'>
+                                                        return <div key={note.customId} className='flex flex-col items-center cursor-pointer border-bottom overflow-hidden'>
                                                         <div onClick={() => updateSelectedFile(note.id)} className='flex w-full p-2 items-center'>
                                                             <img className='w-5 h-5 ml-4' alt='' src={fileIcon} />
                                                             <p className='ml-1 sulphur-15'>{truncateText(note.title, 26)}</p>
@@ -201,8 +242,8 @@ const PlaygroundAside = ({filesAndFolders, updateFilesAndFoldersState, updateSel
 
                         {
                             filesAndFolders.singleNotes.length > 0 && filesAndFolders.singleNotes.map(note => {
-                                return <div key={note.id} className='flex flex-col cursor-pointer border-bottom'>
-                                            <div onClick={() => updateSelectedFile(note.id)} className='flex items-center p-1 folder'>
+                                return <div key={note.customId} className='flex flex-col cursor-pointer border-bottom'>
+                                            <div onClick={() => updateSelectedFile(note.customId)} className='flex items-center p-1 folder'>
                                                 <img className='w-5 h-5 ml-2' alt='' src={fileIcon} />
                                                 <p className='ml-1 sulphur-20'>{note.title}</p>
                                             </div>
