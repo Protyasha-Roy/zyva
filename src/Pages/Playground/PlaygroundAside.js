@@ -201,7 +201,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                                                     {
                                                         file.notes && file.notes.map(note => {
                                                             return <div key={note.customId} className='flex flex-col items-center cursor-pointer border-bottom overflow-hidden'>
-                                                            <div onClick={() => updateSelectedFile(note.id)} className='flex w-full p-2 items-center'>
+                                                            <div onClick={() => updateSelectedFile(note.customId)} className='flex w-full p-2 items-center'>
                                                                 <img className='w-5 h-5 ml-4' alt='' src={fileIcon} />
                                                                 <p className='ml-1 sulphur-15'>{truncateText(note.title, 26)}</p>
                                                             </div>
