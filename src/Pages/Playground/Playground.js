@@ -35,8 +35,8 @@ const Playground = () => {
       };
     return (
         <section className='grid grid-cols-6 h-screen'>
-            <PlaygroundAside updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders} updateFilesAndFoldersState={updateFilesAndFoldersState} />
-            <PlaygroundEditor updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders} updateFilesAndFoldersState={updateFilesAndFoldersState} />
+            <PlaygroundAside updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders}  />
+            <PlaygroundEditor updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders} />
         </section>
     );
 };
