@@ -1,24 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import profileIcon from '../../assets/images/Icon-images/account.png';
 import editIcon from '../../assets/images/Icon-images/edit.png';
+import saveIcon from '../../assets/images/Icon-images/diskette.png';
 import deleteIcon from '../../assets/images/Icon-images/delete.png';
 import downloadPdfIcon from '../../assets/images/Icon-images/download-pdf.png';
 import playButton from '../../assets/images/Icon-images/play-button.png';
 import pauaseButton from '../../assets/images/Icon-images/pause-button.png';
 import './keywordsStyles.css';
+import axios from 'axios';
 
 import { Link } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import ContextMenu from './ContextMenu';
 
-const PlaygroundEditor = () => {
+const PlaygroundEditor = ({selectedFileData}) => {
     const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript} = useSpeechRecognition({clearTranscriptOnListen: false});
     
     const [isPlayed, setIsplayed] = useState(false);
     const [selectedText, setSelectedText] = useState('');
     const [modifiedInnerHTML, setModifiedInnerHTML] = useState(''); 
     const [modifiedInnerText, setModifiedInnerText] = useState('');
-
+    
 
   const [contextMenu, setContextMenu] = useState({ top: 0, left: 0, visible: false });
   const editorRef = useRef();
@@ -90,7 +92,6 @@ const PlaygroundEditor = () => {
       };
 
     
-    
       const capitalizeFirstLetterAfterNewLine = (input) => {
         let result = input;
     
@@ -104,8 +105,8 @@ const PlaygroundEditor = () => {
               result.substring(0, indexOfFirstLetter) +
               firstLetterAfterNewLine +
               result.substring(indexOfFirstLetter + 1);
-          }
-        });
+            }
+          });
     
         return result;
       };
@@ -113,7 +114,7 @@ const PlaygroundEditor = () => {
     
       const replaceWords = (input, replacementPairs) => {
         let result = input;
-
+        
     
         replacementPairs.forEach(([originalWord, replacement]) => {
           result = result.replace(new RegExp(originalWord, 'gi'), replacement);
@@ -121,7 +122,7 @@ const PlaygroundEditor = () => {
         
         return result;
       };
-    
+      
       if (transcript !== '') {
         const replacementPairs = [
           ['period', '.'],
@@ -149,7 +150,7 @@ const PlaygroundEditor = () => {
           ['asterisk', '*'],
           ['slash', '/'],
           ['next line', '<br />'],
-          ['heading start', "<h1 class='heading'>"],
+          [`heading start`, `<h1 class='heading'>`],
           ['heading close', '</h1>'],
           ['topic start', "<h3 class='topic'>"],
           ['topic close', '</h3>'],
@@ -175,16 +176,22 @@ const PlaygroundEditor = () => {
       }
     }, [transcript]);
 
+
     useEffect(() => {
-      editorRef.current.innerHTML = modifiedInnerHTML;
-      setModifiedInnerText(editorRef.current.innerText);
-    }, [modifiedInnerHTML, modifiedInnerText])
+      setModifiedInnerHTML('');
+      resetTranscript()
+    }, [selectedFileData, resetTranscript])
+
+    useEffect(() => {
+      if(selectedFileData.length === undefined) {
+        const contentToUpdate = selectedFileData.content + modifiedInnerHTML;
+        editorRef.current.innerHTML = contentToUpdate;
+      }
+    }, [selectedFileData, modifiedInnerHTML])
     
 
     useEffect(() => {
       if(modifiedInnerText.includes('reset')) {
-        editorRef.current.innerHTML = '';
-        editorRef.current.innerText = '';
         resetTranscript();
       } 
     }, [modifiedInnerText, resetTranscript])
@@ -200,8 +207,27 @@ const PlaygroundEditor = () => {
     }
 
     if(!isMicrophoneAvailable) {
-        return null;
+      return null;
     }
+
+    const handleSaveContent = () => {
+      if(selectedFileData.length !== 0 && modifiedInnerHTML !== '') {
+        if(selectedFileData.isSingleNote) {
+          const contentToUpdate = selectedFileData.content + modifiedInnerHTML;
+
+          axios.put(`http://localhost:5000/updateContent/${selectedFileData._id}/${selectedFileData.customId}`, {contentToUpdate})
+          .then((response) => {
+          })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
+          else {
+            console.log("its not");
+          }
+        }
+      }
+
 
     
   return (
@@ -213,17 +239,19 @@ const PlaygroundEditor = () => {
 
       <div className='rounded playground p-3 mt-2'>
         <div className='flex justify-between items-center'>
-          <p className='sulphur-15 file-title'>Day Dreaming</p>
+          <p className='sulphur-15 file-title'>{selectedFileData.title}</p>
           <div className='flex gap-2'>
+          <img onClick={handleSaveContent} className='w-5 h-5 cursor-pointer' src={saveIcon} alt='' />
             <img className='w-5 h-5' src={editIcon} alt="" />
             <img className='w-5 h-5' src={deleteIcon} alt="" />
             <img className='w-5 h-5' src={downloadPdfIcon} alt="" />
           </div>
         </div>
 
-        <div ref={editorRef}
+        <div
+      ref={editorRef}
          className='speech-container mt-2 rounded p-3 sulphur'>
-        
+
         </div>
 
         <div className='p-2 flex flex-row justify-around items-center w-80 m-auto'>

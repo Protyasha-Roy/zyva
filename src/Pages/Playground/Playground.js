@@ -35,7 +35,6 @@ const Playground = () => {
                 try {
                   const response = await axios.get(`http://localhost:5000/note/${selectedFile.customId}/${selectedFile.parentId}`);
                   setSelectedFileData(response.data);
-                  console.log(response.data)
                 } catch (error) {
                   console.error('Error fetching documents:', error);
                 }
@@ -51,7 +50,7 @@ const Playground = () => {
     return (
         <section className='grid grid-cols-6 h-screen'>
             <PlaygroundAside updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders}  />
-            <PlaygroundEditor updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders} />
+            <PlaygroundEditor selectedFileData={selectedFileData} updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders} />
         </section>
     );
 };
