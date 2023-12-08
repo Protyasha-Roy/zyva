@@ -191,7 +191,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                                             {
                                                 file.fileType === 'folder' ? 
                                                 <>
-                                                    <div className='flex flex-col cursor-pointer border-bottom'>
+                                                    <div className='flex flex-col cursor-pointer'>
                                                         <div className='flex items-center p-1 folder'>
                                                             <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
                                                             <p className='ml-1 sulphur-20'>{truncateText(file.title, 15)}</p>
@@ -200,7 +200,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
 
                                                     {
                                                         file.notes && file.notes.map(note => {
-                                                            return <div key={note.customId} className='flex flex-col items-center cursor-pointer border-bottom overflow-hidden'>
+                                                            return <div key={note.customId} className='hover:bg-gray-800 flex flex-col items-center cursor-pointer overflow-hidden'>
                                                             <div onClick={() => updateSelectedFile(note.customId, note.belongsToFolderId)} className='flex w-full p-2 items-center'>
                                                                 <img className='w-5 h-5 ml-4' alt='' src={fileIcon} />
                                                                 <p className='ml-1 sulphur-15'>{truncateText(note.title, 26)}</p>
@@ -212,8 +212,8 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                                                 </>
                                             :
                                                 <> 
-                                                    <div key={file.customId} className='flex flex-col cursor-pointer border-bottom'>
-                                                        <div onClick={() => updateSelectedFile(file.customId, file._id)} className='flex items-center p-1 folder'>
+                                                    <div key={file.customId} className='flex flex-col cursor-pointer'>
+                                                        <div onClick={() => updateSelectedFile(file.customId, file._id)} className='flex items-center p-1 folder hover:bg-gray-800'>
                                                             <img className='w-5 h-5 ml-2' alt='' src={fileIcon} />
                                                             <p className='ml-1 sulphur-20'>{file.title}</p>
                                                         </div>

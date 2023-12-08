@@ -215,18 +215,23 @@ const PlaygroundEditor = ({selectedFileData}) => {
 
     const handleSaveContent = () => {
       if(selectedFileData.length !== 0) {
+        const contentToUpdate = isContentEdited ? editorRef.current.innerHTML : selectedFileData.content + ' ' +  modifiedInnerHTML;
         if(selectedFileData.isSingleNote) {
-          const contentToUpdate = isContentEdited ? editorRef.current.innerHTML : selectedFileData.content + ' ' +  modifiedInnerHTML;
           
-          axios.put(`http://localhost:5000/updateContent/${selectedFileData._id}/${selectedFileData.customId}`, {contentToUpdate})
+          axios.put(`http://localhost:5000/updateContent/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
           .then((response) => {
           })
           .catch(function (error) {
             console.log(error);
           });
         }
-        else {
-          console.log("its not");
+        else if(selectedFileData.isFileInsideFolder) {
+          axios.put(`http://localhost:5000/updateContent/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
+          .then((response) => {
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
         }
         setIsEditable(false);
         setIsContentEdited(false);
@@ -238,7 +243,20 @@ const PlaygroundEditor = ({selectedFileData}) => {
       }
 
       const handleEdit = () => {
-        setIsEditable(!isEditable)
+        setIsEditable(!isEditable);
+
+        if(isEditable === false) {
+          setAlertMessage('Editing Activated');
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 1200);
+        }
+        else {
+          setAlertMessage('Editing Deactivated');
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 1200);
+        }
       }
     
   return (
@@ -253,10 +271,10 @@ const PlaygroundEditor = ({selectedFileData}) => {
           <p className='sulphur-15 file-title'>{selectedFileData.title}</p>
           <p className='text-center text-green-400 sulphur-15'>{alertMessage}</p>
           <div className='flex gap-2'>
-          <img onClick={handleSaveContent} className='w-5 h-5 cursor-pointer' src={saveIcon} alt='' />
-            <img onClick={handleEdit} className='cursor-pointer w-5 h-5' src={editIcon} alt="" />
-            <img className='cursor-pointer w-5 h-5' src={deleteIcon} alt="" />
-            <img className='cursor-pointer w-5 h-5' src={downloadPdfIcon} alt="" />
+          <img onClick={handleSaveContent} className='hover:border rounded hover:bg-black w-5 h-5 cursor-pointer' src={saveIcon} alt='' />
+            <img onClick={handleEdit} className='hover:border rounded hover:bg-black cursor-pointer w-5 h-5' src={editIcon} alt="" />
+            <img className='hover:border rounded hover:bg-black cursor-pointer w-5 h-5' src={deleteIcon} alt="" />
+            {/* <img className='cursor-pointer w-5 h-5' src={downloadPdfIcon} alt="" /> */}
           </div>
         </div>
 
