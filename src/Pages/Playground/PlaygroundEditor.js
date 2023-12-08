@@ -20,6 +20,9 @@ const PlaygroundEditor = ({selectedFileData}) => {
     const [selectedText, setSelectedText] = useState('');
     const [modifiedInnerHTML, setModifiedInnerHTML] = useState(''); 
     const [modifiedInnerText, setModifiedInnerText] = useState('');
+    const [isEditable, setIsEditable] = useState(false);
+    const [isContentEdited, setIsContentEdited] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
     
 
   const [contextMenu, setContextMenu] = useState({ top: 0, left: 0, visible: false });
@@ -211,24 +214,32 @@ const PlaygroundEditor = ({selectedFileData}) => {
     }
 
     const handleSaveContent = () => {
-      if(selectedFileData.length !== 0 && modifiedInnerHTML !== '') {
+      if(selectedFileData.length !== 0) {
         if(selectedFileData.isSingleNote) {
-          const contentToUpdate = selectedFileData.content + modifiedInnerHTML;
-
+          const contentToUpdate = isContentEdited ? editorRef.current.innerHTML : selectedFileData.content + ' ' +  modifiedInnerHTML;
+          
           axios.put(`http://localhost:5000/updateContent/${selectedFileData._id}/${selectedFileData.customId}`, {contentToUpdate})
           .then((response) => {
           })
-              .catch(function (error) {
-                console.log(error);
-              });
-          }
-          else {
-            console.log("its not");
-          }
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
+        else {
+          console.log("its not");
+        }
+        setIsEditable(false);
+        setIsContentEdited(false);
+        setAlertMessage('saved');
+        setTimeout(() => {
+          setAlertMessage('');
+        }, 1200);
         }
       }
 
-
+      const handleEdit = () => {
+        setIsEditable(!isEditable)
+      }
     
   return (
     <section style={{ position: 'relative'}} className='col-span-5 flex flex-col items-center p-2'>
@@ -240,15 +251,18 @@ const PlaygroundEditor = ({selectedFileData}) => {
       <div className='rounded playground p-3 mt-2'>
         <div className='flex justify-between items-center'>
           <p className='sulphur-15 file-title'>{selectedFileData.title}</p>
+          <p className='text-center text-green-400 sulphur-15'>{alertMessage}</p>
           <div className='flex gap-2'>
           <img onClick={handleSaveContent} className='w-5 h-5 cursor-pointer' src={saveIcon} alt='' />
-            <img className='w-5 h-5' src={editIcon} alt="" />
-            <img className='w-5 h-5' src={deleteIcon} alt="" />
-            <img className='w-5 h-5' src={downloadPdfIcon} alt="" />
+            <img onClick={handleEdit} className='cursor-pointer w-5 h-5' src={editIcon} alt="" />
+            <img className='cursor-pointer w-5 h-5' src={deleteIcon} alt="" />
+            <img className='cursor-pointer w-5 h-5' src={downloadPdfIcon} alt="" />
           </div>
         </div>
 
         <div
+        onInputCapture={() => setIsContentEdited(true)}
+        contentEditable={isEditable}
       ref={editorRef}
          className='speech-container mt-2 rounded p-3 sulphur'>
 
