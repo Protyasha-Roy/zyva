@@ -259,6 +259,26 @@ const PlaygroundEditor = ({selectedFileData}) => {
         }
       }
     
+
+      const deleteFile = () => {
+        if(selectedFileData.isSingleNote) {
+          axios.delete(`http://localhost:5000/delete/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
+          .then((response) => {
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
+        else if(selectedFileData.isFileInsideFolder) {
+          axios.delete(`http://localhost:5000/delete/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
+          .then((response) => {
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
+      }
+
   return (
     <section style={{ position: 'relative'}} className='col-span-5 flex flex-col items-center p-2'>
       <div className='flex justify-between w-11/12 items-center'>
@@ -273,7 +293,7 @@ const PlaygroundEditor = ({selectedFileData}) => {
           <div className='flex gap-2'>
           <img onClick={handleSaveContent} className='hover:border rounded hover:bg-black w-5 h-5 cursor-pointer' src={saveIcon} alt='' />
             <img onClick={handleEdit} className='hover:border rounded hover:bg-black cursor-pointer w-5 h-5' src={editIcon} alt="" />
-            <img className='hover:border rounded hover:bg-black cursor-pointer w-5 h-5' src={deleteIcon} alt="" />
+            <img onClick={deleteFile} className='hover:border rounded hover:bg-black cursor-pointer w-5 h-5' src={deleteIcon} alt="" />
             {/* <img className='cursor-pointer w-5 h-5' src={downloadPdfIcon} alt="" /> */}
           </div>
         </div>
