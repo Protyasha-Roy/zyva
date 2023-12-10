@@ -3,7 +3,7 @@ a {
 }
 
 nav {
-    background-color: rgba(32, 41, 55, 1);
-    border-radius: 10px;
+    background-color: rgba(32, 41, 55, 0.2);
+    border-radius: 5px;
     width: 500px;
 }

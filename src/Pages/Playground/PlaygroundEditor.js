@@ -194,10 +194,10 @@ const PlaygroundEditor = ({selectedFileData}) => {
     
 
     useEffect(() => {
-      if(modifiedInnerText.includes('reset')) {
+      if(modifiedInnerHTML.includes('reset')) {
         resetTranscript();
       } 
-    }, [modifiedInnerText, resetTranscript])
+    }, [modifiedInnerHTML, resetTranscript])
   
 
     const stopListening = () => {
@@ -217,9 +217,9 @@ const PlaygroundEditor = ({selectedFileData}) => {
       if(selectedFileData.length !== 0) {
         const contentToUpdate = isContentEdited ? editorRef.current.innerHTML : selectedFileData.content + ' ' +  modifiedInnerHTML;
         if(selectedFileData.isSingleNote) {
-          
           axios.put(`http://localhost:5000/updateContent/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
           .then((response) => {
+            console.log("saved");
           })
           .catch(function (error) {
             console.log(error);

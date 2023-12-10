@@ -8,11 +8,11 @@ const Header = () => {
             <div className='flex justify-around w-9/12 items-center flex-wrap'>
             <p className='poiret-50'>zyva</p>
             <nav className='p-1'>
-                <ul className='list-none flex justify-around poiret-20 w-100'>
-                    <li><Link to='/'>Home</Link></li>
-                    <li><Link to='/about'>About</Link></li>
-                    <li><Link to='/instructions'>Instructions</Link></li>
-                    <li><Link to='/get-access'>Get Access</Link></li>
+                <ul className='list-none flex justify-around sulphur-15 w-100 text-blue-300'>
+                    <li className='hover:text-white rounded'><Link to='/'>Home</Link></li>
+                    <li className='hover:text-white rounded'><Link to='/about'>About</Link></li>
+                    <li className='hover:text-white rounded'><Link to='/instructions'>Instructions</Link></li>
+                    <li className='hover:text-white rounded'><Link to='/get-access'>Get Access</Link></li>
                 </ul>
             </nav>
             </div>
