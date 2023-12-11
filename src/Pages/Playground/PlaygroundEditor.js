@@ -284,7 +284,7 @@ const PlaygroundEditor = ({selectedFileData}) => {
         </div>
       </div>
       :
-      <p className='sulphur-30 mt-40 text-blue-300'>Select a file and start taking notes</p>
+      <p className='sulphur-20 mt-40 text-blue-300'>Select a file and start taking notes</p>
       }
 
     </section>
