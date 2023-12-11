@@ -3,6 +3,7 @@ import folderIcon from '../../assets/images/Icon-images/folder.png';
 import fileIcon from '../../assets/images/Icon-images/document.png';
 import './Playground.css';
 import checkedIcon from '../../assets/images/Icon-images/checked.png';
+import deleteIcon from '../../assets/images/Icon-images/delete.png';
 import cancelIcon from '../../assets/images/Icon-images/cancel.png';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
@@ -19,6 +20,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
     const [fileTypeName, setFileTypeName] = useState("");
     const [selectedFolderId, setSelectedFolderId] = useState(null);
     const [isFieldEmpty, setIsFieldEmpty] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     const userEmail = localStorage.getItem('signedInEmail');
 
@@ -64,18 +66,19 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                     title: inputValue,
                     notes: []
                 }
-
+              
                 axios.post('http://localhost:5000/createFilesAndFolders', newFolder)
-                            .then(response => {
-                                
-                            })
-                            .catch(error => {
-                            console.error('Error:', error);
-                            
-                        });
-                
-                  setIsCreateNoteClicked(false);
-                }
+                                .then(response => {
+                                    setAlertText('Folder already exists');
+                                    setTimeout(() => {
+                                        setAlertText('');
+                                    }, 1200);
+                                    })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    
+                                });
+            }
 
             else if(fileTypeName === "singleNote") {
                     const newSingleNote = {
@@ -90,21 +93,18 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                         content: ''
                     }
                     
-
-                    axios.post('http://localhost:5000/createFilesAndFolders', newSingleNote)
+                axios.post('http://localhost:5000/createFilesAndFolders', newSingleNote)
                             .then(response => {
-                                console.log('Response:', response.data);
-                              
+                                setAlertText('File already exists');
+                                setTimeout(() => {
+                                    setAlertText('');
+                                }, 2000);
+                                
                             })
                             .catch(error => {
                                 console.error('Error:', error);
                                 
-                            });
-
-
-                   
-                    
-                      setIsCreateNoteClicked(false);
+                            });                 
             }
             
             else if(fileTypeName === "noteInsideFolder") {
@@ -120,17 +120,20 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                         content: ''
                     }
 
-                    axios.post('http://localhost:5000/createFilesAndFolders', newNoteInsideFolder)
+                axios.post('http://localhost:5000/createFilesAndFolders', newNoteInsideFolder)
                             .then(response => {
-                            
+                                setAlertText('Note already exists');
+                                setTimeout(() => {
+                                    setAlertText('');
+                                }, 2000);
                             })
                             .catch(error => {
-                            console.error('Error:', error);
+                                console.error('Error:', error);
                             });
-
-                    setIsCreateNoteClicked(false);
+                            
                 }
                 setIsFieldEmpty(false);
+                setIsCreateNoteClicked(false);
         }
     }
 
@@ -155,6 +158,20 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
     };
 
 
+    const deleteFolder = (customId) => {
+        axios.delete(`http://localhost:5000/deleteFolder/${customId}`)
+        .then((response) => {
+            setAlertText('Deleted Successfully');
+            setTimeout(() => {
+                setAlertText('');
+            }, 2000);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+
     return (
         <aside className='col-span-1 bg-black aside-section'>
                 <div className='p-1 text-blue-400 flex flex-row justify-around sulphur-15 border-white'>
@@ -163,12 +180,15 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                     <p className='cursor-pointer hover:text-blue-300'>Keywords</p>
                 </div>
 
-                <div className='flex flex-row justify-around border-white poiret-20 items-center'>
-                    <p>Create Note:</p>
-                    <div className='flex flex-row justify-center items-center gap-4'>
-                        <img name="createFolderButton" className='cursor-pointer w-5 h-5 hover:bg-gray-800 rounded' alt='' src={folderIcon} onClick={() => handleCreateNotes("createFolderButton")} />
-                        <img name="createNoteButton" className='cursor-pointer w-5 h-5 hover:bg-gray-800 rounded' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteButton")} />
+                <div className='flex flex-col'>
+                    <div className='flex flex-row justify-around border-white poiret-20 items-center'>
+                        <p>Create Note:</p>
+                        <div className='flex flex-row justify-center items-center gap-4'>
+                            <img name="createFolderButton" className='cursor-pointer w-5 h-5 hover:bg-gray-800 rounded' alt='' src={folderIcon} onClick={() => handleCreateNotes("createFolderButton")} />
+                            <img name="createNoteButton" className='cursor-pointer w-5 h-5 hover:bg-gray-800 rounded' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteButton")} />
+                        </div>
                     </div>
+                    <p className='text-red-300 text-center sulphur-15'>{alertText}</p>
                 </div>
 
                 <div>
@@ -183,7 +203,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                             </div>
                         </div>
                        {
-                        isFieldEmpty &&  <p className='text-center text-red-300 sulphur-15'>Empty spaces are not allowed!</p>
+                        isFieldEmpty &&  <p className='text-center text-red-300 sulphur-15'>Field must be filled</p>
                        }
                     </div>
                      }
@@ -199,10 +219,15 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                                                 file.fileType === 'folder' ? 
                                                 <>
                                                     <div className='flex flex-col cursor-pointer'>
-                                                        <div className='flex items-center p-1 folder'>
-                                                            <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
-                                                            <p className='ml-1 sulphur-20'>{truncateText(file.title, 15)}</p>
-                                                            <img name="createNoteButton" className='cursor-pointer w-4 h-4 ml-auto' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteInsideFolder", file.customId)} />
+                                                        <div className='flex justify-between items-center p-1 folder'>
+                                                            <div className='flex items-center'>
+                                                                <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
+                                                                <p className='ml-1 sulphur-20'>{truncateText(file.title, 13)}</p>
+                                                            </div>
+                                                            <div className='flex flex-row gap-2'>
+                                                                <img name="createNoteButton" className='cursor-pointer w-4 h-4 ml-auto hover:bg-gray-700 rounded' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteInsideFolder", file.customId)} />
+                                                                <img src={deleteIcon} onClick={() => deleteFolder(file.customId)} className='cursor-pointer w-4 h-4 ml-auto hover:bg-gray-700 rounded' alt='' />
+                                                            </div>
                                                         </div>
 
                                                     {
@@ -220,9 +245,14 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                                             :
                                                 <> 
                                                     <div key={file.customId} className='flex flex-col cursor-pointer'>
-                                                        <div onClick={() => updateSelectedFile(file.customId, file._id)} className='flex items-center p-1 folder hover:bg-gray-800'>
-                                                            <img className='w-5 h-5 ml-2' alt='' src={fileIcon} />
-                                                            <p className='ml-1 sulphur-20'>{file.title}</p>
+                                                        <div onClick={() => updateSelectedFile(file.customId, file._id)} className='flex items-center justify-between p-1 folder hover:bg-gray-800'>
+                                                            <div className='flex items-center'>
+                                                                <img className='w-5 h-5 ml-2' alt='' src={fileIcon} />
+                                                                <p className='ml-1 sulphur-20'>{truncateText(file.title, 13)}</p>
+                                                            </div>
+                                                            <div>
+                                                                <img src={deleteIcon} onClick={() => deleteFolder(file.customId)} className='cursor-pointer w-4 h-4 ml-auto hover:bg-gray-700 rounded' alt='' />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </>

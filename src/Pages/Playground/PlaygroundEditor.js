@@ -167,21 +167,27 @@ const PlaygroundEditor = ({selectedFileData}) => {
       if(selectedFileData.length !== 0) {
         const contentToUpdate = isContentEdited ? editorRef.current.innerHTML : selectedFileData.content + ' ' +  modifiedInnerHTML;
         if(selectedFileData.isSingleNote) {
-          axios.put(`http://localhost:5000/updateContent/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
-          .then((response) => {
-            console.log("saved");
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+         
+            axios.put(`http://localhost:5000/updateContent/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
+            .then((response) => {
+              console.log("saved");
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          
+         
         }
         else if(selectedFileData.isFileInsideFolder) {
-          axios.put(`http://localhost:5000/updateContent/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
-          .then((response) => {
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+         
+            axios.put(`http://localhost:5000/updateContent/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
+            .then((response) => {
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          
+          
         }
         setIsEditable(false);
         setIsContentEdited(false);
@@ -218,6 +224,10 @@ const PlaygroundEditor = ({selectedFileData}) => {
           .catch(function (error) {
             console.log(error);
           });
+          setAlertMessage('File Deleted! Select other file to note again. Not selecting file will not save anything');
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 3000);
         }
         else if(selectedFileData.isFileInsideFolder) {
           axios.delete(`http://localhost:5000/delete/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
@@ -226,6 +236,10 @@ const PlaygroundEditor = ({selectedFileData}) => {
           .catch(function (error) {
             console.log(error);
           });
+          setAlertMessage('File Deleted! Select other file to note again. Not selecting file will not save anything');
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 3000);
         }
       }
 
