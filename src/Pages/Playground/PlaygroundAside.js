@@ -6,6 +6,7 @@ import checkedIcon from '../../assets/images/Icon-images/checked.png';
 import cancelIcon from '../../assets/images/Icon-images/cancel.png';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
 
@@ -18,6 +19,8 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
     const [fileTypeName, setFileTypeName] = useState("");
     const [selectedFolderId, setSelectedFolderId] = useState(null);
     const [isFieldEmpty, setIsFieldEmpty] = useState(false);
+
+    const userEmail = localStorage.getItem('signedInEmail');
 
 
     const handleCreateNotes = (name, folderId) => {
@@ -52,6 +55,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
         else{
             if(fileTypeName === "folder") {
                 const newFolder = {
+                    email: userEmail,
                     fileType: fileTypeName,
                     isfolder: true,
                     isSingleNote: false,
@@ -75,6 +79,8 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
 
             else if(fileTypeName === "singleNote") {
                     const newSingleNote = {
+                    email: userEmail,
+
                     fileType: fileTypeName,
                         isfolder: false,
                         isSingleNote: true,
@@ -103,6 +109,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
             
             else if(fileTypeName === "noteInsideFolder") {
                     const newNoteInsideFolder = {
+                    email: userEmail,
                     fileType: fileTypeName,
                         isfolder: false,
                         isSingleNote: false,
@@ -151,16 +158,16 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
     return (
         <aside className='col-span-1 bg-black aside-section'>
                 <div className='p-1 text-blue-400 flex flex-row justify-around sulphur-15 border-white'>
-                    <p>Instructions</p>
+                    <Link className='cursor-pointer hover:text-blue-300' to={'/instructions'}>Instructions</Link>
                     <p className='text-white'>|</p>
-                    <p>Keywords</p>
+                    <p className='cursor-pointer hover:text-blue-300'>Keywords</p>
                 </div>
 
                 <div className='flex flex-row justify-around border-white poiret-20 items-center'>
                     <p>Create Note:</p>
                     <div className='flex flex-row justify-center items-center gap-4'>
-                        <img name="createFolderButton" className='cursor-pointer w-5 h-5' alt='' src={folderIcon} onClick={() => handleCreateNotes("createFolderButton")} />
-                        <img name="createNoteButton" className='cursor-pointer w-5 h-5' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteButton")} />
+                        <img name="createFolderButton" className='cursor-pointer w-5 h-5 hover:bg-gray-800 rounded' alt='' src={folderIcon} onClick={() => handleCreateNotes("createFolderButton")} />
+                        <img name="createNoteButton" className='cursor-pointer w-5 h-5 hover:bg-gray-800 rounded' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteButton")} />
                     </div>
                 </div>
 

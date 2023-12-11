@@ -1,8 +1,10 @@
 import React from 'react';
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
+import { Link } from 'react-router-dom';
 
 const About = () => {
+    const isUserSignedin = localStorage.getItem('isUserSignedin');
     return (
         <section>
             <Header />
@@ -36,8 +38,8 @@ const About = () => {
                         </ul>
                     </div>
                 </div>
-                <div>
-                    <p className='sulphur-30 text-center'>So, what are you waiting for? <span className='text-blue-500'> Try it out</span></p>
+                <div className='m-3'>
+                <Link to={isUserSignedin === 'true' ? '/playground' : '/get-access'} className='bg-slate-800 w-40 m-auto sulphur-30 rounded hover:bg-slate-700 text-blue-400 p-2'>Try it out!</Link>
                 </div>
             </div>
             <Footer />

@@ -9,12 +9,15 @@ const Playground = () => {
     const [filesAndFolders, setFilesAndFolders] = useState([]);
     const [selectedFile, setSelectedFile] = useState({customId:null, parentId: null});
     const [selectedFileData, setSelectedFileData] = useState([]);
+    const [isDeleted, setIsDeleted] = useState(true);
+    
+    const signedInEmail = localStorage.getItem('signedInEmail');
 
 
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get('http://localhost:5000/allFilesAndFolders');
+            const response = await axios.get(`http://localhost:5000/allFilesAndFolders/${signedInEmail}`);
             setFilesAndFolders(response.data.reverse());
           } catch (error) {
             console.error('Error fetching documents:', error);
@@ -22,12 +25,13 @@ const Playground = () => {
         };
 
         fetchData();
-      }, [filesAndFolders]);
+      }, [filesAndFolders, signedInEmail]);
       
       
       const updateSelectedFile = (noteId, noteParentId) => {
         setSelectedFile({ customId: noteId, parentId: noteParentId });
       };
+
       
       useEffect(() => {
           const fetchSelectedFileData = async () => {
@@ -47,6 +51,7 @@ const Playground = () => {
     const updateFilesAndFoldersState = (newState) => {
         setFilesAndFolders(newState);
       };
+
     return (
         <section className='grid grid-cols-6 h-screen'>
             <PlaygroundAside updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders}  />
