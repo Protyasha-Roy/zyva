@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import folderIcon from '../../assets/images/Icon-images/folder.png';
 import fileIcon from '../../assets/images/Icon-images/document.png';
 import './Playground.css';
@@ -9,10 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
+const PlaygroundAside = ({updateSelectedFile}) => {
 
     const uniqueId = uuidv4();
     const inputRef = useRef(null);
+
+    const signedInEmail = localStorage.getItem('signedInEmail');
 
 
     const [isCreateNoteClicked, setIsCreateNoteClicked] = useState(false);
@@ -21,6 +23,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
     const [selectedFolderId, setSelectedFolderId] = useState(null);
     const [isFieldEmpty, setIsFieldEmpty] = useState(false);
     const [alertText, setAlertText] = useState('');
+    const [filesAndFolders, setFilesAndFolders] = useState([]);
 
     const userEmail = localStorage.getItem('signedInEmail');
 
@@ -47,7 +50,26 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
         setIsCreateNoteClicked(true);
     }
 
+    useEffect(() => {
+            axios.get(`http://localhost:5000/allFilesAndFolders/${signedInEmail}`)
+            .then((response) => {
+                setFilesAndFolders(response.data.reverse());
+            })
+            .catch((error) => {
+             console.log(error);
+            })
+    },[signedInEmail,])
 
+    const fetchNotes = () => {
+        axios.get(`http://localhost:5000/allFilesAndFolders/${signedInEmail}`)
+            .then((response) => {
+                setFilesAndFolders(response.data.reverse());
+            })
+            .catch((error) => {
+             console.log(error);
+            })
+    }
+    
     const handleChecked = () => {
         const inputValue = inputRef.current.value.trim();
         
@@ -69,15 +91,19 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
               
                 axios.post('http://localhost:5000/createFilesAndFolders', newFolder)
                                 .then(response => {
-                                    setAlertText('Folder already exists');
-                                    setTimeout(() => {
-                                        setAlertText('');
-                                    }, 1200);
+                                    if(response.status === 200) {
+                                        fetchNotes();
+                                    }
                                     })
                                 .catch(error => {
-                                    console.error('Error:', error);
-                                    
+                                    if(error.response.status === 409) {
+                                        setAlertText('Folder already exists');
+                                        setTimeout(() => {
+                                            setAlertText('');
+                                        }, 1200);
+                                    }
                                 });
+
             }
 
             else if(fileTypeName === "singleNote") {
@@ -94,17 +120,20 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                     }
                     
                 axios.post('http://localhost:5000/createFilesAndFolders', newSingleNote)
-                            .then(response => {
-                                setAlertText('File already exists');
-                                setTimeout(() => {
-                                    setAlertText('');
-                                }, 2000);
-                                
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                
-                            });                 
+                .then(response => {
+                    if(response.status === 200) {
+                        fetchNotes();
+                    }
+                    })
+                .catch(error => {
+                    if(error.response.status === 409) {
+                        setAlertText('Note already exists');
+                        setTimeout(() => {
+                            setAlertText('');
+                        }, 1200);
+                    }
+                });
+
             }
             
             else if(fileTypeName === "noteInsideFolder") {
@@ -121,16 +150,20 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
                     }
 
                 axios.post('http://localhost:5000/createFilesAndFolders', newNoteInsideFolder)
-                            .then(response => {
-                                setAlertText('Note already exists');
-                                setTimeout(() => {
-                                    setAlertText('');
-                                }, 2000);
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-                            
+                .then(response => {
+                    if(response.status === 200) {
+                        fetchNotes();
+                    }
+                    })
+                .catch(error => {
+                    if(error.response.status === 409) {
+                        setAlertText('Note already exists');
+                        setTimeout(() => {
+                            setAlertText('');
+                        }, 1200);
+                    }
+                });
+
                 }
                 setIsFieldEmpty(false);
                 setIsCreateNoteClicked(false);
@@ -160,15 +193,15 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
 
     const deleteFolder = (customId) => {
         axios.delete(`http://localhost:5000/deleteFolder/${customId}`)
-        .then((response) => {
-            setAlertText('Deleted Successfully');
-            setTimeout(() => {
-                setAlertText('');
-            }, 2000);
-        })
-        .catch(function (error) {
+        .then(response => {
+            if(response.status === 200) {
+                fetchNotes();
+            }
+            })
+        .catch(error => {
             console.log(error);
         });
+
     }
 
 

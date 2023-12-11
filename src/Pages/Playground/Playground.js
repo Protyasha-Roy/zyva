@@ -9,23 +9,6 @@ const Playground = () => {
     const [filesAndFolders, setFilesAndFolders] = useState([]);
     const [selectedFile, setSelectedFile] = useState({customId:null, parentId: null});
     const [selectedFileData, setSelectedFileData] = useState([]);
-    const [isDeleted, setIsDeleted] = useState(true);
-    
-    const signedInEmail = localStorage.getItem('signedInEmail');
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await axios.get(`http://localhost:5000/allFilesAndFolders/${signedInEmail}`);
-            setFilesAndFolders(response.data.reverse());
-          } catch (error) {
-            console.error('Error fetching documents:', error);
-          }
-        };
-
-        fetchData();
-      }, [filesAndFolders, signedInEmail]);
       
       
       const updateSelectedFile = (noteId, noteParentId) => {
