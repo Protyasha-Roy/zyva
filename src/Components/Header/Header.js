@@ -14,7 +14,7 @@ const Header = () => {
                     <li className='hover:text-white rounded'><Link to='/'>Home</Link></li>
                     <li className='hover:text-white rounded'><Link to='/about'>About</Link></li>
                     <li className='hover:text-white rounded'><Link to='/instructions'>Instructions</Link></li>
-                    <li className='hover:text-white rounded'><Link to={isUserSignedin === 'true' ? '/playground' : '/get-access'}>Get Access</Link></li>
+                    <li className='hover:text-white rounded'><Link to={isUserSignedin === 'true' ? '/playground' : '/get-access'}>Get-Access</Link></li>
                 </ul>
             </nav>
             </div>

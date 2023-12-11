@@ -7,6 +7,15 @@
     width: 97%;
 }
 
+@media only screen and (min-width: 768px) {
+    .playground {
+        height: 85vh;
+    }
+    .speech-container {
+        height: 67vh;
+    }
+}
+
 .file-title{
     color: rgb(156, 152, 152);
 }
@@ -14,7 +23,6 @@
 .speech-container{
     background-color: rgba(24, 25, 28, 1);
     overflow-y: scroll;
-    height: 72vh;
 }
 
 ::selection {

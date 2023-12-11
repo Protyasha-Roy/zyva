@@ -173,7 +173,7 @@ const PlaygroundAside = ({filesAndFolders, updateSelectedFile}) => {
 
 
     return (
-        <aside className='col-span-1 bg-black aside-section'>
+        <aside className='bg-black aside-section h-60 p-2 md:col-span-2 md:h-screen lg:col-span-1'>
                 <div className='p-1 text-blue-400 flex flex-row justify-around sulphur-15 border-white'>
                     <Link className='cursor-pointer hover:text-blue-300' to={'/instructions'}>Instructions</Link>
                     <p className='text-white'>|</p>

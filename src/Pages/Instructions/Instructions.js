@@ -7,9 +7,9 @@ const Instructions = () => {
     return (
         <section>
             <Header />
-            <div className='m-auto mt-10 mb-10 w-7/12 flex flex-cold justify-center'>
+            <div className='m-auto mt-10 mb-10 w-11/12 md:w-9/12 lg:w-7/12 flex flex-cold justify-center'>
             <div className='flex flex-col justify-center items-center w-full gap-4'>
-                <p className='sulphur-30'>WATCH THIS INSTRUCTIONAL VIDEO</p>
+                <p className='sulphur-20'>WATCH THIS INSTRUCTIONAL VIDEO</p>
                 <div className='w-full'>
                     <img className='w-full' src={instructionDemoImage} alt=''></img>
                 </div>

@@ -8,7 +8,7 @@ const About = () => {
     return (
         <section>
             <Header />
-            <div className='flex flex-col w-7/12 items-center justify-center m-auto'>
+            <div className='flex flex-col w-10/12 sm:w-9/12 md:w-7/12 items-center justify-center m-auto'>
                 <div>
                     <div>
                     <h3 className='sulphur-25 text-blue-300'>WHAT ZYVA IS ABOUT?</h3>

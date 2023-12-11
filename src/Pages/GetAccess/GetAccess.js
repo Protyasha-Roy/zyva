@@ -85,7 +85,7 @@ const GetAccess = () => {
   return (
     <section>
       <Header />
-      <div className="m-auto mt-10 mb-10 flex flex-col signup-form">
+      <div className="m-auto mt-5 mb-5 flex flex-col signup-form w-96">
         <h2 className='text-blue-300 poiret-30 p-2 text-center'>
           {haveAnAccount ? 'Sign in to your account' : 'Create your zyva account'}
         </h2>

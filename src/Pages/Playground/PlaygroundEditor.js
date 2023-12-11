@@ -251,7 +251,7 @@ const PlaygroundEditor = ({selectedFileData}) => {
       }
 
   return (
-    <section style={{ position: 'relative'}} className='col-span-5 flex flex-col items-center p-2'>
+    <section style={{ position: 'relative'}} className='flex flex-col items-center h-fit md:col-span-4 lg:col-span-5 m-2'>
       <div className='flex justify-between w-11/12 items-center'>
         <Link to='/' className='sulphur-30 cursor'>zyva</Link>
         <img onClick={handleSignOut} className='w-5 h-5 cursor-pointer hover:bg-green-800' src={signOutIcon} alt="" />
@@ -259,7 +259,7 @@ const PlaygroundEditor = ({selectedFileData}) => {
 
       {
         selectedFileData.title ? 
-      <div className='rounded playground p-3 mt-2'>
+      <div className='rounded playground p-3 mt-2 h-96'>
         <div className='flex justify-between items-center'>
           <p className='sulphur-15 file-title'>{selectedFileData.title}</p>
           <p className='text-center text-green-400 sulphur-15'>{alertMessage}</p>
@@ -275,7 +275,7 @@ const PlaygroundEditor = ({selectedFileData}) => {
         onInputCapture={() => setIsContentEdited(true)}
         contentEditable={isEditable}
       ref={editorRef}
-         className='speech-container mt-2 rounded p-3 sulphur'>
+         className='speech-container mt-2 rounded p-3 sulphur h-4/6'>
 
         </div>
 
