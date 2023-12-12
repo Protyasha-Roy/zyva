@@ -7,7 +7,7 @@ const Header = () => {
 
     return (
         <section className='flex justify-center p-2'>
-            <div className='flex justify-around w-9/12 items-center flex-wrap'>
+            <div className='flex justify-around w-11/12 items-center flex-wrap'>
             <p className='poiret-50'>zyva</p>
             <nav className='p-1'>
                 <ul className='list-none flex justify-around sulphur-15 w-100 text-blue-300'>

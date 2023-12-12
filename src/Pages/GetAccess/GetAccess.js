@@ -16,7 +16,6 @@ const GetAccess = () => {
     password: '',
   });
   const [error, setError] = useState('');
-  console.log(process.env)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,7 +85,7 @@ const GetAccess = () => {
   return (
     <section>
       <Header />
-      <div className="m-auto mt-5 mb-5 flex flex-col signup-form w-96">
+      <div className="m-auto mt-5 mb-5 flex flex-col signup-form w-full sm:w-8/12 md:w-6/12 lg:w-5/12">
         <h2 className='text-blue-300 poiret-30 p-2 text-center'>
           {haveAnAccount ? 'Sign in to your account' : 'Create your zyva account'}
         </h2>
