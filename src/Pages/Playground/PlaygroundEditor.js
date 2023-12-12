@@ -13,14 +13,13 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-const PlaygroundEditor = ({selectedFileData}) => {
+const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) => {
     const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript} = useSpeechRecognition({clearTranscriptOnListen: false});
     const navigate = useNavigate();
     const editorRef = useRef();
     
     const [isPlayed, setIsplayed] = useState(false);
     const [modifiedInnerHTML, setModifiedInnerHTML] = useState(''); 
-    const [modifiedInnerText, setModifiedInnerText] = useState('');
     const [isEditable, setIsEditable] = useState(false);
     const [isContentEdited, setIsContentEdited] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
@@ -82,17 +81,17 @@ const PlaygroundEditor = ({selectedFileData}) => {
           ['new line', ''],
           ['comma', ','],
           ['question mark', '?'],
-          ['exclamatory sign', '!'],
+          ['exclamatory', '!'],
           ['single quote', "'"],
           ['double quote', '"'],
           ['hyphen', '-'],
           ['colon', ':'],
           ['semicolon', ';'],
-          ['first bracket', '('],
+          ['first brace', '('],
           ['first brace right', ')'],
-          ['second bracket', '{'],
+          ['second brace', '{'],
           ['second brace right', '}'],
-          ['third bracket', '['],
+          ['third brace', '['],
           ['third brace right', ']'],
           ['hash', '#'],
           ['dollar sign', '$'],
@@ -111,7 +110,7 @@ const PlaygroundEditor = ({selectedFileData}) => {
           ['note close', '</p>'],
           ['list start', '<li>'],
           ['list close', '</li>'],
-          ['coding start', '<code>'],
+          ['coding start', '<code style="background-color: black">'],
           ['coding close', '</code>'],
           ['underline start', '<u>'],
           ['underline close', '</u>'],
@@ -220,26 +219,24 @@ const PlaygroundEditor = ({selectedFileData}) => {
         if(selectedFileData.isSingleNote) {
           axios.delete(`http://localhost:5000/delete/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
           .then((response) => {
+            if(response.status === 200) {
+              updateSetShowEditor(false);
+            }
           })
           .catch(function (error) {
             console.log(error);
           });
-          setAlertMessage('File Deleted! Select other file to note again. Not selecting file will not save anything');
-          setTimeout(() => {
-            setAlertMessage('');
-          }, 3000);
         }
         else if(selectedFileData.isFileInsideFolder) {
           axios.delete(`http://localhost:5000/delete/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
           .then((response) => {
+            if(response.status === 200) {
+              updateSetShowEditor(false);
+            }
           })
           .catch(function (error) {
             console.log(error);
           });
-          setAlertMessage('File Deleted! Select other file to note again. Not selecting file will not save anything');
-          setTimeout(() => {
-            setAlertMessage('');
-          }, 3000);
         }
       }
 
@@ -258,7 +255,7 @@ const PlaygroundEditor = ({selectedFileData}) => {
       </div>
 
       {
-        selectedFileData.title ? 
+        showEditor && selectedFileData.title ? 
       <div className='rounded playground p-3 mt-2 h-96'>
         <div className='flex justify-between items-center'>
           <p className='sulphur-15 file-title'>{selectedFileData.title}</p>

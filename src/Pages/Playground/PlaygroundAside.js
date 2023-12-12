@@ -8,6 +8,7 @@ import cancelIcon from '../../assets/images/Icon-images/cancel.png';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Keywords from './Keywords';
 
 const PlaygroundAside = ({updateSelectedFile}) => {
 
@@ -24,6 +25,7 @@ const PlaygroundAside = ({updateSelectedFile}) => {
     const [isFieldEmpty, setIsFieldEmpty] = useState(false);
     const [alertText, setAlertText] = useState('');
     const [filesAndFolders, setFilesAndFolders] = useState([]);
+    const [keywordsToggle, setKeywordsToggle] = useState(false);
 
     const userEmail = localStorage.getItem('signedInEmail');
 
@@ -58,7 +60,7 @@ const PlaygroundAside = ({updateSelectedFile}) => {
             .catch((error) => {
              console.log(error);
             })
-    },[signedInEmail,])
+    },[signedInEmail,filesAndFolders])
 
     const fetchNotes = () => {
         axios.get(`http://localhost:5000/allFilesAndFolders/${signedInEmail}`)
@@ -204,13 +206,20 @@ const PlaygroundAside = ({updateSelectedFile}) => {
 
     }
 
+    const updateKeywordsToggle = (newState) => {
+        setKeywordsToggle(newState);
+    }
+
 
     return (
         <aside className='bg-black aside-section h-60 p-2 md:col-span-2 md:h-screen lg:col-span-1'>
+                {
+                    keywordsToggle && <Keywords updateKeywordsToggle={updateKeywordsToggle} />
+                }
                 <div className='p-1 text-blue-400 flex flex-row justify-around sulphur-15 border-white'>
                     <Link className='cursor-pointer hover:text-blue-300' to={'/instructions'}>Instructions</Link>
                     <p className='text-white'>|</p>
-                    <p className='cursor-pointer hover:text-blue-300'>Keywords</p>
+                    <p className='cursor-pointer hover:text-blue-300' onClick={updateKeywordsToggle}>Keywords</p>
                 </div>
 
                 <div className='flex flex-col'>

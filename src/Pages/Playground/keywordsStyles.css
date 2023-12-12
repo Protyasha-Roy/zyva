@@ -10,3 +10,20 @@
     font-weight: bold;
     color: rgb(160, 160, 248);
 }
+
+.keywordsModal {
+    background-color: rgba(0, 0, 0, 0.595);
+}
+
+.keywordsSection {
+    overflow-y: scroll;
+}
+
+.keywordsSection::-webkit-scrollbar {
+    width: 5px;
+}
+
+.keywordsSection::-webkit-scrollbar-thumb {
+    background-color: rgb(59, 59, 60);
+    border-radius: 0px;
+  }

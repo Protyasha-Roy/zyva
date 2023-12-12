@@ -9,10 +9,11 @@ const Playground = () => {
     const [filesAndFolders, setFilesAndFolders] = useState([]);
     const [selectedFile, setSelectedFile] = useState({customId:null, parentId: null});
     const [selectedFileData, setSelectedFileData] = useState([]);
-      
+    const [showEditor, setShowEditor] = useState(false);
       
       const updateSelectedFile = (noteId, noteParentId) => {
         setSelectedFile({ customId: noteId, parentId: noteParentId });
+        setShowEditor(true);
       };
 
       
@@ -30,15 +31,14 @@ const Playground = () => {
         fetchSelectedFileData();
       }, [selectedFile]);
       
-      
-    const updateFilesAndFoldersState = (newState) => {
-        setFilesAndFolders(newState);
-      };
 
+      const updateSetShowEditor = (newState) => {
+        setShowEditor(newState);
+      }
     return (
         <section className='flex flex-col md:grid md:grid-cols-6 h-screen'>
-            <PlaygroundAside updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders}  />
-            <PlaygroundEditor selectedFileData={selectedFileData} />
+            <PlaygroundAside updateSetEditor={updateSetShowEditor} updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders}  />
+            <PlaygroundEditor showEditor={showEditor} updateSetShowEditor={updateSetShowEditor} selectedFileData={selectedFileData} />
         </section>
     );
 };
