@@ -12,6 +12,7 @@ import axios from 'axios';
 
 import { Link, useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { editableInputTypes } from '@testing-library/user-event/dist/utils';
 
 const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) => {
     const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript} = useSpeechRecognition({clearTranscriptOnListen: false});
@@ -137,7 +138,9 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
     useEffect(() => {
       if(selectedFileData.length === undefined) {
         const contentToUpdate = selectedFileData.content + modifiedInnerHTML;
+       if( editorRef.current !== null){
         editorRef.current.innerHTML = contentToUpdate;
+       }
       }
     }, [selectedFileData, modifiedInnerHTML])
     
@@ -167,7 +170,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
         const contentToUpdate = isContentEdited ? editorRef.current.innerHTML : selectedFileData.content + ' ' +  modifiedInnerHTML;
         if(selectedFileData.isSingleNote) {
          
-            axios.put(`http://localhost:5000/updateContent/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
+            axios.put(`https://zyva-server.onrender.com/updateContent/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
             .then((response) => {
               console.log("saved");
             })
@@ -179,7 +182,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
         }
         else if(selectedFileData.isFileInsideFolder) {
          
-            axios.put(`http://localhost:5000/updateContent/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
+            axios.put(`https://zyva-server.onrender.com/updateContent/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
             .then((response) => {
             })
             .catch(function (error) {
@@ -217,7 +220,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
 
       const deleteFile = () => {
         if(selectedFileData.isSingleNote) {
-          axios.delete(`http://localhost:5000/delete/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
+          axios.delete(`https://zyva-server.onrender.com/delete/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
           .then((response) => {
             if(response.status === 200) {
               updateSetShowEditor(false);
@@ -228,7 +231,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
           });
         }
         else if(selectedFileData.isFileInsideFolder) {
-          axios.delete(`http://localhost:5000/delete/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
+          axios.delete(`https://zyva-server.onrender.com/delete/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
           .then((response) => {
             if(response.status === 200) {
               updateSetShowEditor(false);

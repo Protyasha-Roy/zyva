@@ -16,6 +16,7 @@ const GetAccess = () => {
     password: '',
   });
   const [error, setError] = useState('');
+  console.log(process.env)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +31,7 @@ const GetAccess = () => {
 
     if(haveAnAccount) {
         if(formData.email && formData.password) {
-            axios.post('http://localhost:5000/signin', formData)
+            axios.post('https://zyva-server.onrender.com/signin', formData)
             .then(response => {
                 setFormData({
                     name: '',
@@ -51,7 +52,7 @@ const GetAccess = () => {
     }
     else{
         if(formData.name && formData.email && formData.password) {
-            axios.post('http://localhost:5000/signup', formData)
+            axios.post('https://zyva-server.onrender.com/signup', formData)
             .then(response => {
                 setFormData({
                     name: '',

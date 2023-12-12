@@ -21,7 +21,7 @@ const Playground = () => {
           const fetchSelectedFileData = async () => {
             if(selectedFile.customId !== null && selectedFile.parentId !== null) {
                 try {
-                  const response = await axios.get(`http://localhost:5000/note/${selectedFile.customId}/${selectedFile.parentId}`);
+                  const response = await axios.get(`https://zyva-server.onrender.com/note/${selectedFile.customId}/${selectedFile.parentId}`);
                   setSelectedFileData(response.data);
                 } catch (error) {
                   console.error('Error fetching documents:', error);

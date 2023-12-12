@@ -53,7 +53,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
     }
 
     useEffect(() => {
-            axios.get(`http://localhost:5000/allFilesAndFolders/${signedInEmail}`)
+            axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
             .then((response) => {
                 setFilesAndFolders(response.data.reverse());
             })
@@ -63,7 +63,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
     },[signedInEmail,filesAndFolders])
 
     const fetchNotes = () => {
-        axios.get(`http://localhost:5000/allFilesAndFolders/${signedInEmail}`)
+        axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
             .then((response) => {
                 setFilesAndFolders(response.data.reverse());
             })
@@ -91,7 +91,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                     notes: []
                 }
               
-                axios.post('http://localhost:5000/createFilesAndFolders', newFolder)
+                axios.post('https://zyva-server.onrender.com/createFilesAndFolders', newFolder)
                                 .then(response => {
                                     if(response.status === 200) {
                                         fetchNotes();
@@ -121,7 +121,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                         content: ''
                     }
                     
-                axios.post('http://localhost:5000/createFilesAndFolders', newSingleNote)
+                axios.post('https://zyva-server.onrender.com/createFilesAndFolders', newSingleNote)
                 .then(response => {
                     if(response.status === 200) {
                         fetchNotes();
@@ -151,7 +151,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                         content: ''
                     }
 
-                axios.post('http://localhost:5000/createFilesAndFolders', newNoteInsideFolder)
+                axios.post('https://zyva-server.onrender.com/createFilesAndFolders', newNoteInsideFolder)
                 .then(response => {
                     if(response.status === 200) {
                         fetchNotes();
@@ -194,7 +194,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
 
 
     const deleteFolder = (customId) => {
-        axios.delete(`http://localhost:5000/deleteFolder/${customId}`)
+        axios.delete(`https://zyva-server.onrender.com/deleteFolder/${customId}`)
         .then(response => {
             if(response.status === 200) {
                 fetchNotes();
