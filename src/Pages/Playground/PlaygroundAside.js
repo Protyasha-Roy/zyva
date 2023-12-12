@@ -10,7 +10,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Keywords from './Keywords';
 
-const PlaygroundAside = ({updateSelectedFile}) => {
+const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
 
     const uniqueId = uuidv4();
     const inputRef = useRef(null);
@@ -198,6 +198,7 @@ const PlaygroundAside = ({updateSelectedFile}) => {
         .then(response => {
             if(response.status === 200) {
                 fetchNotes();
+                updateSetShowEditor(false);
             }
             })
         .catch(error => {
