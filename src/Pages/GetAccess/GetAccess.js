@@ -86,7 +86,7 @@ const GetAccess = () => {
     <section>
       <Header />
       <div className="m-auto mt-5 mb-5 flex flex-col signup-form w-11/12 sm:w-8/12 md:w-6/12 lg:w-4/12">
-        <h2 className='text-blue-300 poiret-30 p-2 text-center'>
+        <h2 className='text-blue-300 poiret-25 p-2 text-center'>
           {haveAnAccount ? 'Sign in to your account' : 'Create your zyva account'}
         </h2>
         <form className='flex flex-col gap-5 p-5' onSubmit={handleSubmit}>
@@ -152,7 +152,7 @@ const GetAccess = () => {
             </button>
           )}
 
-          <p className="text-center already-have-account p-3 poiret-20">
+          <p className="text-center already-have-account p-3 poiret-15">
             {haveAnAccount ? "Don't have an account?" : "Already have an account"}{' '}
             <span className='text-blue-300 cursor-pointer' onClick={handleSetStates}>
               {!haveAnAccount ? 'Sign in' : 'Create one'}
