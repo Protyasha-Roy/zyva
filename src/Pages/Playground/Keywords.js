@@ -6,7 +6,7 @@ import cancel from '../../assets/images/Icon-images/cancel.png';
 const Keywords = ({updateKeywordsToggle}) => {
     
     return (
-        <div className='fixed top-0 left-0 bottom-0 right-0 z-20 text-white keywordsModal flex items-center justify-center' onClick={() => updateKeywordsToggle(false)}>
+        <div className='fixed top-0 left-0 bottom-0 right-0 z-20 text-white keywordsModal flex items-center justify-center'>
             <div className='bg-gray-900 p-2 rounded'>
                 <div className='flex flex-row justify-between'>
                     <h3 className='poiret-20 text-center border-bottom'>Keywords</h3>
@@ -18,7 +18,6 @@ const Keywords = ({updateKeywordsToggle}) => {
                         <KeywordHolder start={'heading start'} end={'heading close'} meaning={'to create a heading'} />
                         <KeywordHolder start={'topic start'} end={'topic close'} meaning={'to create a topic name'} />
                         <KeywordHolder start={'note start'} end={'note close'} meaning={'to start writing a note'} />
-                        <KeywordHolder start={'question mark'} end={'heading end'} meaning={'to create a heading'} />
                         <KeywordHolder start={'new line'} end={''} meaning={'to create a new sentence'} />
                         <KeywordHolder start={'next line'} end={''} meaning={'to go to bottom line directly'} />
                         <KeywordHolder start={'horizontal line'} end={''} meaning={'to create a horizontal line'} />
