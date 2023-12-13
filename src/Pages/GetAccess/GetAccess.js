@@ -46,6 +46,7 @@ const GetAccess = () => {
             })
             .catch(error => {
               setError(error.response.data.message);
+              setLoading(false);
             });
         }
         else{
@@ -69,10 +70,12 @@ const GetAccess = () => {
             })
             .catch(error => {
               setError(error.response.data.message);
+              setLoading(false);
             });
           }
           else{
             setError('fields can not be empty');
+            setLoading(false);
           }
     }
   };
