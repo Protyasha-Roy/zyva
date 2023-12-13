@@ -68,6 +68,16 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
             })
     },[signedInEmail])
 
+    useEffect(() => {
+            axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
+            .then((response) => {
+                setFilesAndFolders(response.data.reverse());
+            })
+            .catch((error) => {
+             console.log(error);
+            })
+    },[signedInEmail, filesAndFolders])
+
     const fetchNotes = () => {
         axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
             .then((response) => {
