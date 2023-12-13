@@ -1,5 +1,4 @@
 import React from 'react';
-import instructionDemoImage from '../../assets/images/Instruction-images/instructions-thumbnail.png';
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
 import ReactPlayer from 'react-player/lib';
