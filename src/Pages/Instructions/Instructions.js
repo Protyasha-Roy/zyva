@@ -12,9 +12,15 @@ const Instructions = () => {
             <div className='flex flex-col justify-center items-center w-full gap-4'>
                 <p className='sulphur-20'>WATCH THIS INSTRUCTIONAL VIDEO</p>
                 <div className='w-full'>
-                <video width="100%" height="auto" controls poster={instructionDemoImage}>
-                <source src={instructionVideo} type="video/mp4" />
-        Your browser does not support the video tag.
+                <video
+                    width="100%"
+                    height="auto"
+                    controls
+                    poster={instructionDemoImage}
+                >            
+                <source src={instructionVideo} />
+                    Your browser does not support the video tag.
+        
       </video>
                 </div>
             </div>
