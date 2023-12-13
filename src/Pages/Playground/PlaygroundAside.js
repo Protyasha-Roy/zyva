@@ -26,6 +26,8 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
     const [alertText, setAlertText] = useState('');
     const [filesAndFolders, setFilesAndFolders] = useState([]);
     const [keywordsToggle, setKeywordsToggle] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('');
 
     const userEmail = localStorage.getItem('signedInEmail');
 
@@ -53,14 +55,18 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
     }
 
     useEffect(() => {
+        setLoading(true)
+        setLoadingMessage('Loading notes..');
             axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
             .then((response) => {
                 setFilesAndFolders(response.data.reverse());
+                setLoading(false);
+                setLoadingMessage('');
             })
             .catch((error) => {
              console.log(error);
             })
-    },[signedInEmail,filesAndFolders])
+    },[signedInEmail])
 
     const fetchNotes = () => {
         axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
@@ -90,11 +96,14 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                     title: inputValue,
                     notes: []
                 }
-              
+                setLoading(true);
+                setLoadingMessage('creating folder..')
                 axios.post('https://zyva-server.onrender.com/createFilesAndFolders', newFolder)
                                 .then(response => {
                                     if(response.status === 200) {
                                         fetchNotes();
+                                        setLoading(false);
+                                        setLoadingMessage('');
                                     }
                                     })
                                 .catch(error => {
@@ -103,6 +112,8 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                                         setTimeout(() => {
                                             setAlertText('');
                                         }, 1200);
+                                        setLoading(false);
+                                        setLoadingMessage('');
                                     }
                                 });
 
@@ -111,7 +122,6 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
             else if(fileTypeName === "singleNote") {
                     const newSingleNote = {
                     email: userEmail,
-
                     fileType: fileTypeName,
                         isfolder: false,
                         isSingleNote: true,
@@ -120,11 +130,16 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                         title: inputValue,
                         content: ''
                     }
-                    
+
+                    setLoading(true);
+                    setLoadingMessage('creating note..')
+
                 axios.post('https://zyva-server.onrender.com/createFilesAndFolders', newSingleNote)
                 .then(response => {
                     if(response.status === 200) {
                         fetchNotes();
+                        setLoading(false);
+                        setLoadingMessage('');
                     }
                     })
                 .catch(error => {
@@ -133,6 +148,8 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                         setTimeout(() => {
                             setAlertText('');
                         }, 1200);
+                        setLoading(false);
+                        setLoadingMessage('');
                     }
                 });
 
@@ -151,10 +168,15 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                         content: ''
                     }
 
+                    setLoading(true);
+                    setLoadingMessage('creating note..');
+
                 axios.post('https://zyva-server.onrender.com/createFilesAndFolders', newNoteInsideFolder)
                 .then(response => {
                     if(response.status === 200) {
                         fetchNotes();
+                        setLoading(false);
+                        setLoadingMessage('');
                     }
                     })
                 .catch(error => {
@@ -163,6 +185,8 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                         setTimeout(() => {
                             setAlertText('');
                         }, 1200);
+                        setLoading(false);
+                        setLoadingMessage('');
                     }
                 });
 
@@ -194,15 +218,21 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
 
 
     const deleteFolder = (customId) => {
+        setLoading(true);
+        setLoadingMessage('deleting file..')
         axios.delete(`https://zyva-server.onrender.com/deleteFolder/${customId}`)
         .then(response => {
             if(response.status === 200) {
                 fetchNotes();
                 updateSetShowEditor(false);
+                setLoading(false);
+                setLoadingMessage('');
             }
             })
         .catch(error => {
             console.log(error);
+            setLoading(false);
+            setLoadingMessage('');
         });
 
     }
@@ -235,7 +265,8 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                 </div>
 
                 <div>
-                    
+                    {loading ? <p className='text-center text-green-300 sulphur-15'>{loadingMessage}</p> : ''}
+
                     {isCreateNoteClicked &&  
                     <div className='flex flex-col'>
                         <div className='flex flex-row justify-around poiret-20 items-center playgroundAside-form p-1'>
@@ -281,6 +312,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                                                                 <p className='ml-1 sulphur-15'>{truncateText(note.title, 26)}</p>
                                                             </div>
                                                         </div>
+                                                        
                                                         })
                                                     }
                                                     </div>

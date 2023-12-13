@@ -16,6 +16,7 @@ const GetAccess = () => {
     password: '',
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,6 +31,7 @@ const GetAccess = () => {
 
     if(haveAnAccount) {
         if(formData.email && formData.password) {
+          setLoading(true);
             axios.post('https://zyva-server.onrender.com/signin', formData)
             .then(response => {
                 setFormData({
@@ -39,6 +41,7 @@ const GetAccess = () => {
                   })
                   localStorage.setItem('isUserSignedin', true);
                   localStorage.setItem('signedInEmail', formData.email);
+                  setLoading(false);
                   navigate('/playground');
             })
             .catch(error => {
@@ -51,6 +54,7 @@ const GetAccess = () => {
     }
     else{
         if(formData.name && formData.email && formData.password) {
+          setLoading(true)
             axios.post('https://zyva-server.onrender.com/signup', formData)
             .then(response => {
                 setFormData({
@@ -60,6 +64,7 @@ const GetAccess = () => {
                   })
                   localStorage.setItem('isUserSignedin', true);
                   localStorage.setItem('signedInEmail', formData.email);
+                  setLoading(false);
                   navigate('/playground');
             })
             .catch(error => {
@@ -144,11 +149,11 @@ const GetAccess = () => {
 
           {!haveAnAccount ? (
             <button type="submit" className='signup-button sulphur-25'>
-              Sign Up
+              {loading ? 'Signing in...' : 'Sign Up'}
             </button>
           ) : (
             <button type="submit" className='signup-button sulphur-25'>
-              Sign In
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           )}
 
