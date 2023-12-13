@@ -2,7 +2,8 @@ import React from 'react';
 import instructionDemoImage from '../../assets/images/Instruction-images/instructions-thumbnail.png';
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
-import instructionVideo from '../../assets/videos/instructions.mp4';
+import ReactPlayer from 'react-player/lib';
+import './instructions.css';
 
 const Instructions = () => {
     return (
@@ -11,17 +12,14 @@ const Instructions = () => {
             <div className='m-auto mt-10 mb-10 w-11/12 md:w-9/12 lg:w-7/12 flex flex-cold justify-center'>
             <div className='flex flex-col justify-center items-center w-full gap-4'>
                 <p className='sulphur-20'>WATCH THIS INSTRUCTIONAL VIDEO</p>
-                <div className='w-full'>
-                <video
-                    width="100%"
-                    height="auto"
-                    controls
-                    poster={instructionDemoImage}
-                >            
-                <source src={instructionVideo} />
-                    Your browser does not support the video tag.
-        
-      </video>
+                <div className='w-full border video-container'>
+                    <ReactPlayer
+                    className='h-screen border'
+                        url="https://youtu.be/_b0z1SeZhBE"
+                        controls
+                        width="100%"
+                        height="100%"
+                    />
                 </div>
             </div>
             </div>
