@@ -2,6 +2,7 @@ import React from 'react';
 import instructionDemoImage from '../../assets/images/Instruction-images/instructions-thumbnail.png';
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
+import instructionVideo from '../../assets/videos/instructions.mp4';
 
 const Instructions = () => {
     return (
@@ -11,7 +12,10 @@ const Instructions = () => {
             <div className='flex flex-col justify-center items-center w-full gap-4'>
                 <p className='sulphur-20'>WATCH THIS INSTRUCTIONAL VIDEO</p>
                 <div className='w-full'>
-                    <img className='w-full' src={instructionDemoImage} alt=''></img>
+                <video width="100%" height="auto" controls poster={instructionDemoImage}>
+                <source src={instructionVideo} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
                 </div>
             </div>
             </div>
