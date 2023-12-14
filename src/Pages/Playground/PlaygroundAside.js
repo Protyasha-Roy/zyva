@@ -306,7 +306,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                                                         <div className='flex justify-between items-center p-1 folder'>
                                                             <div className='flex items-center'>
                                                                 <img className='w-5 h-5 ml-2' alt='' src={folderIcon} />
-                                                                <p className='ml-1 sulphur-15'>{truncateText(file.title, 13)}</p>
+                                                                <p className='ml-1 sulphur-15'>{truncateText(file.title, 20)}</p>
                                                             </div>
                                                             <div className='flex flex-row gap-2'>
                                                                 <img name="createNoteButton" className='cursor-pointer w-4 h-4 ml-auto hover:bg-gray-700 rounded' alt='' src={fileIcon} onClick={() => handleCreateNotes("createNoteInsideFolder", file.customId)} />
@@ -333,7 +333,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                                                         <div onClick={() => updateSelectedFile(file.customId, file._id)} className='flex items-center justify-between p-1 folder hover:bg-gray-800'>
                                                             <div className='flex items-center'>
                                                                 <img className='w-5 h-5 ml-2' alt='' src={fileIcon} />
-                                                                <p className='ml-1 sulphur-15'>{truncateText(file.title, 13)}</p>
+                                                                <p className='ml-1 sulphur-15'>{truncateText(file.title, 20)}</p>
                                                             </div>
                                                             <div>
                                                                 <img src={deleteIcon} onClick={() => deleteFolder(file.customId)} className='cursor-pointer w-4 h-4 ml-auto hover:bg-gray-700 rounded' alt='' />

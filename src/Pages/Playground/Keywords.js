@@ -10,7 +10,7 @@ const Keywords = ({updateKeywordsToggle}) => {
             <div className='bg-gray-900 p-2 rounded'>
                 <div className='flex flex-row justify-between'>
                     <h3 className='poiret-20 text-center border-bottom'>Keywords</h3>
-                    <img onClick={() => updateKeywordsToggle(false)} className='cursor-pointer hover:bg-green-600 rounded' src={cancel} alt='' />
+                    <img onClick={() => updateKeywordsToggle(false)} className='cursor-pointer hover:border-gray-800 rounded' src={cancel} alt='' />
                 </div>
                 <div className='mt-3 keywordsSection h-96'>
                     <div>

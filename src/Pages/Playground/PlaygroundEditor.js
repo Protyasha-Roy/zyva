@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import profileIcon from '../../assets/images/Icon-images/account.png';
 import signOutIcon from '../../assets/images/Icon-images/sign-out.png';
 import editIcon from '../../assets/images/Icon-images/edit.png';
 import saveIcon from '../../assets/images/Icon-images/diskette.png';
 import deleteIcon from '../../assets/images/Icon-images/delete.png';
-import downloadPdfIcon from '../../assets/images/Icon-images/download-pdf.png';
 import playButton from '../../assets/images/Icon-images/play-button.png';
 import pauaseButton from '../../assets/images/Icon-images/pause-button.png';
 import './keywordsStyles.css';
@@ -12,7 +10,6 @@ import axios from 'axios';
 
 import { Link, useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import { editableInputTypes } from '@testing-library/user-event/dist/utils';
 
 const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) => {
     const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript} = useSpeechRecognition({clearTranscriptOnListen: false});
@@ -250,6 +247,14 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
         localStorage.removeItem('signedInEmail');
       }
 
+      const truncateText = (text, maxLength) => {
+        if (text.length <= maxLength) {
+            return text;
+        } else {
+            return text.substring(0, maxLength) + '..';
+        }
+    };
+
   return (
     <section style={{ position: 'relative'}} className='flex flex-col items-center h-fit md:col-span-4 lg:col-span-5 m-2'>
       <div className='flex justify-between w-11/12 items-center'>
@@ -261,7 +266,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
         showEditor && selectedFileData.title ? 
       <div className='rounded playground p-3 mt-2 h-96'>
         <div className='flex justify-between items-center'>
-          <p className='sulphur-15 file-title'>{selectedFileData.title}</p>
+          <p className='sulphur-15 file-title'>{truncateText(selectedFileData.title, 20)}</p>
           <p className='text-center text-green-400 sulphur-15'>{alertMessage}</p>
           <div className='flex gap-2'>
           <img onClick={handleSaveContent} className='hover:border rounded hover:bg-black w-5 h-5 cursor-pointer' src={saveIcon} alt='' />
