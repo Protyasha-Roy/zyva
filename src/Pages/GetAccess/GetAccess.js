@@ -66,7 +66,7 @@ const GetAccess = () => {
                     password: '',
                   })
                   localStorage.setItem('isUserSignedin', true);
-                  localStorage.setItem('signedInEmail', formData.customId);
+                  localStorage.setItem('signedinId', formData.customId);
                   setLoading(false);
                   navigate('/playground');
             })
