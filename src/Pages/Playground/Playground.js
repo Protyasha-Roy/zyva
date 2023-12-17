@@ -31,14 +31,25 @@ const Playground = () => {
         fetchSelectedFileData();
       }, [selectedFile]);
       
+      const updateSelectedFileData = async () => {
+        if(selectedFile.customId !== null && selectedFile.parentId !== null) {
+        try {
+          const response = await axios.get(`https://zyva-server.onrender.com/note/${selectedFile.customId}/${selectedFile.parentId}`);
+          setSelectedFileData(response.data);
+        } catch (error) {
+          console.error('Error fetching documents:', error);
+        }
+    }
+  }
 
       const updateSetShowEditor = (newState) => {
         setShowEditor(newState);
       }
+
     return (
         <section className='flex flex-col md:grid md:grid-cols-6 h-screen'>
             <PlaygroundAside updateSetShowEditor={updateSetShowEditor} updateSetEditor={updateSetShowEditor} updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders}  />
-            <PlaygroundEditor showEditor={showEditor} updateSetShowEditor={updateSetShowEditor} selectedFileData={selectedFileData} />
+            <PlaygroundEditor updateSelectedFileData={updateSelectedFileData} showEditor={showEditor} updateSetShowEditor={updateSetShowEditor} selectedFileData={selectedFileData} />
         </section>
     );
 };

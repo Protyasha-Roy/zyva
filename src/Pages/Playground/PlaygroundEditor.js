@@ -11,7 +11,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) => {
+const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, updateSelectedFileData}) => {
     const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript} = useSpeechRecognition({clearTranscriptOnListen: false});
     const navigate = useNavigate();
     const editorRef = useRef();
@@ -164,12 +164,15 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
 
     const handleSaveContent = () => {
       if(selectedFileData.length !== 0) {
-        const contentToUpdate = isContentEdited ? editorRef.current.innerHTML : selectedFileData.content + ' ' +  modifiedInnerHTML;
+        const contentToUpdate = isContentEdited ? editorRef.current.innerHTML : selectedFileData.content +  modifiedInnerHTML;
         if(selectedFileData.isSingleNote) {
          
             axios.put(`https://zyva-server.onrender.com/updateContent/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
             .then((response) => {
-              console.log("saved");
+              if(response.status === 200) {
+                updateSelectedFileData();
+                resetTranscript();
+              }
             })
             .catch(function (error) {
               console.log(error);
@@ -181,6 +184,10 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor}) =
          
             axios.put(`https://zyva-server.onrender.com/updateContent/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`, {contentToUpdate})
             .then((response) => {
+              if(response.status === 200) {
+                updateSelectedFileData();
+                resetTranscript();
+              }
             })
             .catch(function (error) {
               console.log(error);
