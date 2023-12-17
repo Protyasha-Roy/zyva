@@ -11,7 +11,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, updateSelectedFileData}) => {
+const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, updateSelectedFileData, fetchNotes}) => {
     const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript} = useSpeechRecognition({clearTranscriptOnListen: false});
     const navigate = useNavigate();
     const editorRef = useRef();
@@ -231,10 +231,13 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
     
 
       const deleteFile = () => {
+        setAlertMessage('Deleting..')
         if(selectedFileData.isSingleNote) {
           axios.delete(`https://zyva-server.onrender.com/delete/${selectedFileData._id}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
           .then((response) => {
             if(response.status === 200) {
+              setAlertMessage('');
+              fetchNotes();
               updateSetShowEditor(false);
             }
           })
@@ -246,6 +249,8 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
           axios.delete(`https://zyva-server.onrender.com/delete/${selectedFileData.belongsToFolderId}/${selectedFileData.customId}/${selectedFileData.isSingleNote}`)
           .then((response) => {
             if(response.status === 200) {
+              setAlertMessage('');
+              fetchNotes();
               updateSetShowEditor(false);
             }
           })
@@ -277,6 +282,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
 
   return (
     <section style={{ position: 'relative'}} className='flex flex-col items-center h-fit md:col-span-4 lg:col-span-5 m-2'>
+      <p className='fixed sulphur-15 bg-gray-800 text-gray-400 rounded p-1'>{alertMessage}</p>
       <div className='flex justify-between w-11/12 items-center'>
         <Link to='/' className='sulphur-30 cursor'>zyva</Link>
         <img onClick={handleSignOut} className='w-5 h-5 cursor-pointer hover:bg-green-800' src={signOutIcon} alt="" />
@@ -287,7 +293,6 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
       <div className='rounded playground p-3 mt-2 h-96'>
         <div className='flex justify-between items-center'>
           <p className='sulphur-15 file-title'>{truncateText(selectedFileData.title, 20)}</p>
-          <p className='text-center text-green-400 sulphur-15'>{alertMessage}</p>
           <div className='flex gap-2'>
           <img onClick={handleSaveContent} className='hover:border rounded hover:bg-black w-5 h-5 cursor-pointer' src={saveIcon} alt='' />
             <img onClick={handleEdit} className='hover:border rounded hover:bg-black cursor-pointer w-5 h-5' src={editIcon} alt="" />

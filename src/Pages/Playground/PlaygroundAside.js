@@ -10,12 +10,10 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Keywords from './Keywords';
 
-const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
+const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor, filesAndFolders, loading, setLoading, loadingMessage,setLoadingMessage, fetchNotes}) => {
 
     const uniqueId = uuidv4();
     const inputRef = useRef(null);
-
-    const signedInEmail = localStorage.getItem('signedInEmail');
 
 
     const [isCreateNoteClicked, setIsCreateNoteClicked] = useState(false);
@@ -24,11 +22,8 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
     const [selectedFolderId, setSelectedFolderId] = useState(null);
     const [isFieldEmpty, setIsFieldEmpty] = useState(false);
     const [alertText, setAlertText] = useState('');
-    const [filesAndFolders, setFilesAndFolders] = useState([]);
     const [keywordsToggle, setKeywordsToggle] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [loadingMessage, setLoadingMessage] = useState('');
-
+    
     const userEmail = localStorage.getItem('signedInEmail');
 
 
@@ -54,39 +49,6 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
         setIsCreateNoteClicked(true);
     }
 
-    useEffect(() => {
-        setLoading(true)
-        setLoadingMessage('Loading notes..');
-            axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
-            .then((response) => {
-                setFilesAndFolders(response.data.reverse());
-                setLoading(false);
-                setLoadingMessage('');
-            })
-            .catch((error) => {
-             console.log(error);
-            })
-    },[signedInEmail])
-
-    useEffect(() => {
-            axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
-            .then((response) => {
-                setFilesAndFolders(response.data.reverse());
-            })
-            .catch((error) => {
-             console.log(error);
-            })
-    },[signedInEmail, filesAndFolders])
-
-    const fetchNotes = () => {
-        axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
-            .then((response) => {
-                setFilesAndFolders(response.data.reverse());
-            })
-            .catch((error) => {
-             console.log(error);
-            })
-    }
     
     const handleChecked = () => {
         const inputValue = inputRef.current.value.trim();
@@ -275,7 +237,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor}) => {
                 </div>
 
                 <div>
-                    {loading ? <p className='text-center text-green-300 sulphur-15'>{loadingMessage}</p> : ''}
+                    {loading ? <p className='sulphur-15 text-gray-400 rounded p-1 text-center'>{loadingMessage}</p> : ''}
 
                     {isCreateNoteClicked &&  
                     <div className='flex flex-col'>
