@@ -21,8 +21,6 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
     const [isEditable, setIsEditable] = useState(false);
     const [isContentEdited, setIsContentEdited] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-    const [changeMade, setChangeMade] = useState(false);
-    
 
     
   //Speech recognition functoins
