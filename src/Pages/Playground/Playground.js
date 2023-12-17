@@ -13,7 +13,7 @@ const Playground = () => {
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
 
-    const signedInEmail = localStorage.getItem('signedInEmail');
+    const userId = localStorage.getItem('signedinId');
       
       const updateSelectedFile = (noteId, noteParentId) => {
         setSelectedFile({ customId: noteId, parentId: noteParentId });
@@ -38,7 +38,7 @@ const Playground = () => {
       useEffect(() => {
         setLoading(true)
         setLoadingMessage('Loading notes..');
-            axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
+            axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${userId}`)
             .then((response) => {
                 setFilesAndFolders(response.data.reverse());
                 setLoading(false);
@@ -47,7 +47,7 @@ const Playground = () => {
             .catch((error) => {
              console.log(error);
             })
-    },[signedInEmail])
+    },[userId])
       
       const updateSelectedFileData = async () => {
         if(selectedFile.customId !== null && selectedFile.parentId !== null) {
@@ -61,7 +61,7 @@ const Playground = () => {
   }
 
   const fetchNotes = () => {
-    axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${signedInEmail}`)
+    axios.get(`https://zyva-server.onrender.com/allFilesAndFolders/${userId}`)
         .then((response) => {
             setFilesAndFolders(response.data.reverse());
         })

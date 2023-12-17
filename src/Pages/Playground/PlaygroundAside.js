@@ -24,7 +24,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor, filesAndFolde
     const [alertText, setAlertText] = useState('');
     const [keywordsToggle, setKeywordsToggle] = useState(false);
     
-    const userEmail = localStorage.getItem('signedInEmail');
+    const userId = localStorage.getItem('signedinId');
 
 
     const handleCreateNotes = (name, folderId) => {
@@ -59,7 +59,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor, filesAndFolde
         else{
             if(fileTypeName === "folder") {
                 const newFolder = {
-                    email: userEmail,
+                    userId: userId,
                     fileType: fileTypeName,
                     isfolder: true,
                     isSingleNote: false,
@@ -93,7 +93,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor, filesAndFolde
 
             else if(fileTypeName === "singleNote") {
                     const newSingleNote = {
-                    email: userEmail,
+                    userId: userId,
                     fileType: fileTypeName,
                         isfolder: false,
                         isSingleNote: true,
@@ -129,7 +129,7 @@ const PlaygroundAside = ({updateSelectedFile, updateSetShowEditor, filesAndFolde
             
             else if(fileTypeName === "noteInsideFolder") {
                     const newNoteInsideFolder = {
-                    email: userEmail,
+                    userId: userId,
                     fileType: fileTypeName,
                         isfolder: false,
                         isSingleNote: false,

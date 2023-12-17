@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
@@ -14,6 +14,7 @@ const GetAccess = () => {
     name: '',
     email: '',
     password: '',
+    customId: uuidv4
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,15 +35,16 @@ const GetAccess = () => {
           setLoading(true);
             axios.post('https://zyva-server.onrender.com/signin', formData)
             .then(response => {
-                setFormData({
-                    name: '',
-                    email: '',
-                    password: '',
-                  })
-                  localStorage.setItem('isUserSignedin', true);
-                  localStorage.setItem('signedInEmail', formData.email);
-                  setLoading(false);
-                  navigate('/playground');
+              setFormData({
+                name: '',
+                email: '',
+                password: '',
+                customId: null
+              })
+              localStorage.setItem('isUserSignedin', true);
+              localStorage.setItem('signedinId', formData.customId);
+              setLoading(false);
+              navigate('/playground');
             })
             .catch(error => {
               setError(error.response.data.message);
@@ -64,7 +66,7 @@ const GetAccess = () => {
                     password: '',
                   })
                   localStorage.setItem('isUserSignedin', true);
-                  localStorage.setItem('signedInEmail', formData.email);
+                  localStorage.setItem('signedInEmail', formData.customId);
                   setLoading(false);
                   navigate('/playground');
             })
