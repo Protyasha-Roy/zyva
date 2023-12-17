@@ -12,6 +12,7 @@ const Playground = () => {
     const [showEditor, setShowEditor] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
+    const [loadingNote, setLoadingNote] = useState(false);
 
     const userId = localStorage.getItem('signedinId');
       
@@ -22,11 +23,13 @@ const Playground = () => {
 
       
       useEffect(() => {
+        setLoadingNote(true);
           const fetchSelectedFileData = async () => {
             if(selectedFile.customId !== null && selectedFile.parentId !== null) {
                 try {
                   const response = await axios.get(`https://zyva-server.onrender.com/note/${selectedFile.customId}/${selectedFile.parentId}`);
                   setSelectedFileData(response.data);
+                  setLoadingNote(false)
                 } catch (error) {
                   console.error('Error fetching documents:', error);
                 }
@@ -78,7 +81,7 @@ const Playground = () => {
     return (
         <section className='flex flex-col md:grid md:grid-cols-6 h-screen'>
             <PlaygroundAside loading={loading} setLoading={setLoading} loadingMessage={loadingMessage} setLoadingMessage={setLoadingMessage} updateSetShowEditor={updateSetShowEditor} updateSetEditor={updateSetShowEditor} updateSelectedFile={updateSelectedFile} filesAndFolders={filesAndFolders} setFilesAndFolders={setFilesAndFolders} fetchNotes={fetchNotes} />
-            <PlaygroundEditor updateSelectedFileData={updateSelectedFileData} showEditor={showEditor} updateSetShowEditor={updateSetShowEditor} selectedFileData={selectedFileData} fetchNotes={fetchNotes} />
+            <PlaygroundEditor loadingNote={loadingNote} updateSelectedFileData={updateSelectedFileData} showEditor={showEditor} updateSetShowEditor={updateSetShowEditor} selectedFileData={selectedFileData} fetchNotes={fetchNotes} />
         </section>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import folderIcon from '../../assets/images/Icon-images/folder.png';
 import fileIcon from '../../assets/images/Icon-images/document.png';
 import './Playground.css';

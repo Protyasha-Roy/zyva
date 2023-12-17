@@ -11,7 +11,8 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, updateSelectedFileData, fetchNotes}) => {
+const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, updateSelectedFileData, fetchNotes, loadingNote}) => {
+
     const { transcript, browserSupportsSpeechRecognition, isMicrophoneAvailable, resetTranscript} = useSpeechRecognition({clearTranscriptOnListen: false});
     const navigate = useNavigate();
     const editorRef = useRef();
@@ -264,7 +265,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
       const handleSignOut = () => {
         navigate('/');
         localStorage.setItem('isUserSignedin', false);
-        localStorage.removeItem('signedInEmail');
+        localStorage.removeItem('signedinId');
       }
 
       const truncateText = (text, maxLength) => {
@@ -301,13 +302,13 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
           </div>
         </div>
 
-        <div
+        {loadingNote ? <p className='speech-container mt-2 rounded p-3 sulphur-15 h-4/6 text-center'>Loading Note..</p> : <div
         onInputCapture={handleChange}
         contentEditable={isEditable}
       ref={editorRef}
          className='speech-container mt-2 rounded p-3 sulphur h-4/6'>
 
-        </div>
+        </div>}
 
         <div className='p-2 flex flex-row justify-around items-center w-80 m-auto'>
             {isPlayed ? <img className='cursor-pointer' onClick={stopListening} src={pauaseButton} alt='' /> : <img className='cursor-pointer' onClick={startListening} src={playButton} alt='' />}

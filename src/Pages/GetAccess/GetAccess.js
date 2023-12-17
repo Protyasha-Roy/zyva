@@ -10,12 +10,15 @@ import { v4 as uuidv4 } from 'uuid';
 const GetAccess = () => {
   const [haveAnAccount, setHaveAnAccount] = useState(false);
   const navigate = useNavigate();
+  const uniqueId = uuidv4();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    customId: uuidv4
+    userId: uniqueId
   });
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -35,14 +38,14 @@ const GetAccess = () => {
           setLoading(true);
             axios.post('https://zyva-server.onrender.com/signin', formData)
             .then(response => {
+              localStorage.setItem('signedinId', response.data.user.userId);
+              localStorage.setItem('isUserSignedin', true);
               setFormData({
                 name: '',
                 email: '',
                 password: '',
-                customId: null
+                userId: null
               })
-              localStorage.setItem('isUserSignedin', true);
-              localStorage.setItem('signedinId', formData.customId);
               setLoading(false);
               navigate('/playground');
             })
@@ -60,13 +63,14 @@ const GetAccess = () => {
           setLoading(true)
             axios.post('https://zyva-server.onrender.com/signup', formData)
             .then(response => {
+              localStorage.setItem('signedinId', response.data.userId);
+              localStorage.setItem('isUserSignedin', true);
                 setFormData({
                     name: '',
                     email: '',
                     password: '',
+                    userId: null
                   })
-                  localStorage.setItem('isUserSignedin', true);
-                  localStorage.setItem('signedinId', formData.customId);
                   setLoading(false);
                   navigate('/playground');
             })
@@ -88,6 +92,7 @@ const GetAccess = () => {
         name: '',
         email: '',
         password: '',
+        userId: uuidv4
       });
     setError('');
   }
