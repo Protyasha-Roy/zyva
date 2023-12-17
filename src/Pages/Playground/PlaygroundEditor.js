@@ -21,6 +21,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
     const [isEditable, setIsEditable] = useState(false);
     const [isContentEdited, setIsContentEdited] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
+    const [changeMade, setChangeMade] = useState(false);
     
 
     
@@ -126,10 +127,18 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
       }
     }, [transcript]);
 
+    
+    useEffect(() => {
+      if(modifiedInnerHTML.trim() !== '') {
+        setAlertMessage("Changes made, save before you leave");
+      }
+    }, [modifiedInnerHTML])
+
+
 
     useEffect(() => {
       setModifiedInnerHTML('');
-      resetTranscript()
+      resetTranscript();
     }, [selectedFileData, resetTranscript])
 
     useEffect(() => {
@@ -161,6 +170,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
     if(!isMicrophoneAvailable) {
       return null;
     }
+
 
     const handleSaveContent = () => {
       if(selectedFileData.length !== 0) {
@@ -262,6 +272,11 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
         }
     };
 
+    const handleChange = () => {
+      setIsContentEdited(true);
+      setAlertMessage("changes made, save before you leave");
+    }
+
   return (
     <section style={{ position: 'relative'}} className='flex flex-col items-center h-fit md:col-span-4 lg:col-span-5 m-2'>
       <div className='flex justify-between w-11/12 items-center'>
@@ -284,7 +299,7 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
         </div>
 
         <div
-        onInputCapture={() => setIsContentEdited(true)}
+        onInputCapture={handleChange}
         contentEditable={isEditable}
       ref={editorRef}
          className='speech-container mt-2 rounded p-3 sulphur h-4/6'>
