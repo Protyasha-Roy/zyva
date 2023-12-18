@@ -117,6 +117,10 @@ const PlaygroundEditor = ({selectedFileData, updateSetShowEditor, showEditor, up
           ['italic start', '<i>'],
           ['italic close', '</i>'],
           ['horizontal line', '<hr />'],
+          ['greater than sign', '<span>&gt;</span>'],
+          ['less than sign', '<span>&gt;</span>'],
+          ['angle braces', '<span>&ls;&gt;</span>'],
+          ['at the rate', '<span>@</span>']
         ];
     
         const transcriptWithCapitalization = capitalizeFirstLetterAfterNewLine(transcript);

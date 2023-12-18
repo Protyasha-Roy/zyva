@@ -18,7 +18,7 @@ const Keywords = ({updateKeywordsToggle}) => {
                         <KeywordHolder start={'heading start'} end={'heading close'} meaning={'to create a heading'} />
                         <KeywordHolder start={'topic start'} end={'topic close'} meaning={'to create a topic name'} />
                         <KeywordHolder start={'note start'} end={'note close'} meaning={'to start writing a note'} />
-                        <KeywordHolder start={'new line'} end={''} meaning={'to create a new sentence'} />
+                        <KeywordHolder start={'new line'} end={''} meaning={'to create a new sentence/capitalize'} />
                         <KeywordHolder start={'next line'} end={''} meaning={'to go to bottom line directly'} />
                         <KeywordHolder start={'horizontal line'} end={''} meaning={'to create a horizontal line'} />
                         <KeywordHolder start={'list start'} end={'list close'} meaning={'to create a list of things'} />
@@ -53,7 +53,7 @@ const Keywords = ({updateKeywordsToggle}) => {
                         <KeywordHolder start={'plus sign'} end={''} meaning={'to create +'} />
                         <KeywordHolder start={'minus sign'} end={''} meaning={'to create minus sign -'} />
                         <KeywordHolder start={'asterisk'} end={''} meaning={'to create *'} />
-                        <KeywordHolder start={'add sign'} end={''} meaning={'to create @'} />
+                        <KeywordHolder start={'at the rate'} end={''} meaning={'to create @'} />
                         <KeywordHolder start={'ampersand'} end={''} meaning={'to create &'} />
                     </div>
                 </div>
